@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Photography Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #F7F2EA;
+  --warm: #EDE5D4;
+  --milk: #FAF7F2;
+  --caramel: #C4A87A;
+  --mocha: #8B6848;
+  --espresso: #2E1F12;
+  --text: #4A3525;
+  --muted: #A08870;
+  --border: rgba(196,168,122,0.25);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; font-size:16px; }
+
+body {
+  background: var(--milk);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+/* ── Cursor ── */
+.cursor, .cursor-ring {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%,-50%);
+}
+.cursor { width:7px; height:7px; background:var(--caramel); transition:transform .1s; }
+.cursor-ring {
+  width:30px; height:30px;
+  border:1px solid var(--caramel);
+  opacity:.5;
+  transition:all .28s cubic-bezier(.25,.46,.45,.94);
+}
+@media (pointer:coarse) { .cursor, .cursor-ring { display:none; } body { cursor:auto; } }
+body { cursor:none; }
+
+/* ── Nav ── */
+nav {
+  position: fixed; top:0; left:0; right:0; z-index:200;
+  display: flex; justify-content:space-between; align-items:center;
+  padding: 26px 52px;
+  background: transparent;
+  transition: background .4s, backdrop-filter .4s;
+}
+nav.scrolled {
+  background: rgba(250,247,242,0.88);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px; font-weight:300; letter-spacing:.14em;
+  color: var(--espresso); text-decoration:none;
+}
+.nav-links { display:flex; gap:36px; list-style:none; }
+.nav-links a {
+  font-size:10.5px; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--text); text-decoration:none; opacity:.65;
+  transition:opacity .25s;
+}
+.nav-links a:hover { opacity:1; }
+.lang-toggle {
+  font-size:10.5px; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--caramel); background:none; border:none;
+  cursor:none; opacity:.9; transition:opacity .25s; font-family:inherit;
+}
+.lang-toggle:hover { opacity:1; }
+.nav-right { display:flex; align-items:center; gap:28px; }
+
+/* ── Hero ── */
+.hero {
+  min-height: 100vh;
+  display: grid; grid-template-columns: 1fr 1.1fr;
+}
+.hero-left {
+  display:flex; flex-direction:column; justify-content:flex-end;
+  padding: 0 56px 88px;
+  background: var(--cream);
+}
+.hero-tag {
+  font-size:10px; letter-spacing:.28em; text-transform:uppercase;
+  color:var(--caramel); margin-bottom:20px;
+  opacity:0; animation: fadeUp .8s .4s forwards;
+}
+.hero-title {
+  font-family:'Cormorant Garamond',serif;
+  font-size: clamp(54px,5.5vw,88px);
+  font-weight:300; line-height:1.04;
+  color:var(--espresso); margin-bottom:28px;
+  opacity:0; animation: fadeUp .8s .6s forwards;
+}
+.hero-title em { font-style:italic; color:var(--mocha); }
+.hero-sub {
+  font-size:12.5px; line-height:2; color:var(--muted);
+  max-width:320px; margin-bottom:52px;
+  opacity:0; animation: fadeUp .8s .8s forwards;
+}
+.hero-cta {
+  display:inline-flex; align-items:center; gap:18px;
+  font-size:10.5px; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--espresso); text-decoration:none;
+  opacity:0; animation: fadeUp .8s 1s forwards;
+}
+.hero-cta::after {
+  content:''; width:44px; height:1px;
+  background:var(--caramel); transition:width .4s;
+}
+.hero-cta:hover::after { width:72px; }
+.hero-right {
+  position:relative; overflow:hidden;
+  opacity:0; animation: fadeIn 1.2s .3s forwards;
+}
+.hero-slideshow {
+  position:absolute; inset:0;
+}
+.hero-slide {
+  position:absolute; inset:0;
+  opacity:0; transition:opacity 1.2s ease;
+}
+.hero-slide.active { opacity:1; }
+.hero-slide img {
+  width:100%; height:100%; object-fit:cover;
+  filter: sepia(12%) saturate(0.82) brightness(0.97);
+}
+.slide-dots {
+  position:absolute; bottom:80px; right:24px;
+  display:flex; flex-direction:column; gap:8px; z-index:2;
+}
+.slide-dot {
+  width:4px; height:4px; border-radius:50%;
+  background:var(--caramel); opacity:.35;
+  transition:opacity .3s, transform .3s;
+  cursor:none;
+}
+.slide-dot.active { opacity:1; transform:scale(1.5); }
+.hero-scroll {
+  position:absolute; bottom:40px; left:50%;
+  transform:translateX(-50%);
+  display:flex; flex-direction:column; align-items:center; gap:8px;
+  font-size:9px; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--muted);
+}
+.hero-scroll::after {
+  content:''; width:1px; height:40px;
+  background:var(--caramel); opacity:.5;
+  animation:scrollLine 1.8s 1.5s ease-in-out infinite;
+}
+
+/* ── Section base ── */
+section { padding:100px 52px; }
+.section-label {
+  font-size:10px; letter-spacing:.28em; text-transform:uppercase;
+  color:var(--caramel); margin-bottom:16px; display:block;
+}
+.section-title {
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(34px,3.5vw,52px); font-weight:300;
+  color:var(--espresso); line-height:1.15; margin-bottom:56px;
+}
+.section-title em { font-style:italic; }
+
+/* ── Portfolio ── */
+#portfolio { background:var(--milk); }
+.filter-tabs {
+  display:flex; gap:4px; margin-bottom:48px; flex-wrap:wrap;
+}
+.filter-btn {
+  font-size:10.5px; letter-spacing:.18em; text-transform:uppercase;
+  padding:8px 20px; border:1px solid var(--border);
+  background:transparent; color:var(--muted);
+  cursor:none; transition:all .25s; font-family:inherit;
+  border-radius:2px;
+}
+.filter-btn:hover, .filter-btn.active {
+  background:var(--espresso); color:var(--cream);
+  border-color:var(--espresso);
+}
+.masonry {
+  columns: 3; column-gap:16px;
+}
+.masonry-item {
+  break-inside:avoid; margin-bottom:16px;
+  overflow:hidden; position:relative;
+  cursor:none;
+}
+.masonry-item img {
+  width:100%; display:block;
+  filter: sepia(8%) saturate(0.88) brightness(0.98);
+  transition: transform .6s cubic-bezier(.25,.46,.45,.94), filter .4s;
+}
+.masonry-item:hover img {
+  transform:scale(1.03);
+  filter: sepia(5%) saturate(0.95) brightness(1.02);
+}
+.masonry-item.hidden { display:none; }
+
+/* Lightbox */
+.lightbox {
+  position:fixed; inset:0; z-index:500;
+  background:rgba(30,16,8,.92);
+  display:none; align-items:center; justify-content:center;
+}
+.lightbox.open { display:flex; }
+.lightbox img {
+  max-width:88vw; max-height:88vh;
+  object-fit:contain;
+  filter: sepia(8%) saturate(0.88);
+}
+.lb-close {
+  position:absolute; top:28px; right:36px;
+  font-size:26px; color:var(--caramel);
+  background:none; border:none; cursor:none;
+}
+.lb-prev, .lb-next {
+  position:absolute; top:50%; transform:translateY(-50%);
+  font-size:22px; color:var(--caramel);
+  background:none; border:none; cursor:none; padding:16px;
+}
+.lb-prev { left:20px; }
+.lb-next { right:20px; }
+
+/* ── About ── */
+#about { background:var(--cream); }
+.about-grid {
+  display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center;
+}
+.about-img {
+  aspect-ratio:3/4; overflow:hidden;
+}
+.about-img img {
+  width:100%; height:100%; object-fit:cover;
+  filter: sepia(14%) saturate(0.82);
+}
+.about-text p {
+  font-size:15px; line-height:2; color:var(--text);
+  margin-bottom:24px;
+}
+.about-services { margin-top:44px; }
+.services-label {
+  font-size:10px; letter-spacing:.24em; text-transform:uppercase;
+  color:var(--caramel); margin-bottom:20px; display:block;
+}
+.service-list {
+  list-style:none; display:grid; grid-template-columns:1fr 1fr; gap:12px 32px;
+}
+.service-list li {
+  font-size:12.5px; letter-spacing:.04em; color:var(--muted);
+  padding:10px 0; border-bottom:1px solid var(--border);
+  display:flex; align-items:center; gap:10px;
+}
+.service-list li::before {
+  content:''; width:18px; height:1px; background:var(--caramel); flex-shrink:0;
+}
+
+.about-gear { margin-top:36px; }
+.gear-body { display:flex; flex-direction:column; }
+.gear-row {
+  display:grid; grid-template-columns:64px 1fr; gap:20px;
+  padding:12px 0; border-bottom:1px solid var(--border);
+  align-items:baseline;
+}
+.gear-cat {
+  font-size:9.5px; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--caramel); flex-shrink:0; padding-top:2px;
+}
+.gear-items { font-size:13px; color:var(--text); line-height:1.8; }
+
+/* ── Booking ── */
+#booking { background:var(--milk); }
+.booking-wrap {
+  display:grid; grid-template-columns:1fr 1.2fr; gap:80px; align-items:start;
+}
+.booking-info p {
+  font-size:14px; line-height:1.95; color:var(--muted); margin-bottom:36px;
+}
+.booking-steps { list-style:none; }
+.booking-steps li {
+  display:flex; gap:20px; align-items:flex-start;
+  padding:18px 0; border-bottom:1px solid var(--border);
+  font-size:13px; color:var(--text);
+}
+.step-num {
+  font-family:'Cormorant Garamond',serif;
+  font-size:28px; font-weight:300; color:var(--caramel);
+  line-height:1; flex-shrink:0; width:28px;
+}
+
+.contact-form { display:flex; flex-direction:column; gap:20px; }
+.form-group { display:flex; flex-direction:column; gap:8px; }
+.form-group label {
+  font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--caramel);
+}
+.form-group input,
+.form-group select,
+.form-group textarea {
+  background:var(--cream); border:1px solid var(--border);
+  color:var(--text); font-family:inherit; font-size:14px; font-weight:300;
+  padding:14px 16px; outline:none; border-radius:2px;
+  transition:border-color .25s;
+  cursor:none;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus { border-color:var(--caramel); }
+.form-group textarea { resize:vertical; min-height:120px; }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+
+.btn-submit {
+  display:inline-flex; align-items:center; gap:16px;
+  font-size:10.5px; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--milk); background:var(--espresso);
+  border:none; padding:16px 36px;
+  cursor:none; font-family:inherit; border-radius:2px;
+  transition:background .25s; margin-top:8px; align-self:flex-start;
+}
+.btn-submit:hover { background:var(--mocha); }
+.form-success {
+  display:none; padding:20px; background:rgba(196,168,122,.12);
+  border:1px solid var(--border); font-size:13px; color:var(--mocha);
+  border-radius:2px; line-height:1.7;
+}
+
+/* ── Contact ── */
+#contact { background:var(--cream); }
+.contact-grid {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:2px;
+}
+.contact-card {
+  background:var(--milk); padding:44px 36px;
+  display:flex; flex-direction:column; gap:12px;
+}
+.contact-card-icon {
+  font-size:22px; color:var(--caramel); margin-bottom:4px;
+}
+.contact-card-label {
+  font-size:10px; letter-spacing:.22em; text-transform:uppercase; color:var(--muted);
+}
+.contact-card-value {
+  font-family:'Cormorant Garamond',serif;
+  font-size:20px; font-weight:300; color:var(--espresso);
+  text-decoration:none;
+}
+.contact-card-value:hover { color:var(--caramel); }
+
+/* ── Client Pickup ── */
+#clients { background:var(--espresso); color:var(--cream); padding:100px 52px; }
+#clients .section-label { color:var(--caramel); }
+#clients .section-title { color:var(--cream); }
+.client-gate {
+  max-width:520px;
+}
+.client-gate p {
+  font-size:14px; line-height:1.95; color:rgba(250,247,242,.6); margin-bottom:36px;
+}
+.code-input-wrap {
+  display:flex; gap:0;
+}
+.code-input {
+  flex:1; background:rgba(255,255,255,.07);
+  border:1px solid rgba(196,168,122,.3);
+  border-right:none;
+  color:var(--cream); font-family:inherit; font-size:14px;
+  padding:14px 20px; outline:none;
+  letter-spacing:.08em; border-radius:2px 0 0 2px;
+  cursor:none;
+}
+.code-input::placeholder { color:rgba(250,247,242,.3); }
+.code-input:focus { border-color:var(--caramel); }
+.code-btn {
+  background:var(--caramel); color:var(--espresso);
+  border:none; padding:14px 28px;
+  font-size:10.5px; letter-spacing:.18em; text-transform:uppercase;
+  cursor:none; font-family:inherit; border-radius:0 2px 2px 0;
+  transition:background .25s;
+}
+.code-btn:hover { background:#D4B88A; }
+.code-error {
+  font-size:12px; color:#E8A0A0; margin-top:12px; display:none;
+}
+.album-result {
+  display:none; margin-top:40px;
+}
+.album-card {
+  display:flex; gap:24px; align-items:center;
+  background:rgba(255,255,255,.06); padding:24px;
+  border:1px solid rgba(196,168,122,.2); border-radius:2px;
+}
+.album-card img {
+  width:80px; height:80px; object-fit:cover;
+  filter:sepia(15%) saturate(.8); border-radius:2px;
+}
+.album-info { flex:1; }
+.album-name {
+  font-family:'Cormorant Garamond',serif;
+  font-size:22px; color:var(--cream); margin-bottom:4px;
+}
+.album-date { font-size:11px; color:rgba(250,247,242,.45); letter-spacing:.1em; margin-bottom:16px; }
+.album-link {
+  display:inline-flex; align-items:center; gap:12px;
+  font-size:10.5px; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--caramel); text-decoration:none;
+}
+.album-link::after { content:'→'; }
+
+/* ── Footer ── */
+footer {
+  background:var(--espresso); color:rgba(250,247,242,.4);
+  padding:40px 52px;
+  display:flex; justify-content:space-between; align-items:center;
+  font-size:11px; letter-spacing:.08em;
+}
+footer a { color:rgba(250,247,242,.4); text-decoration:none; }
+footer a:hover { color:var(--caramel); }
+
+/* ── Animations ── */
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(22px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity:0; } to { opacity:1; }
+}
+@keyframes zoomOut {
+  from { transform:scale(1.04); } to { transform:scale(1); }
+}
+@keyframes scrollLine {
+  0%,100% { opacity:.5; transform:scaleY(1); }
+  50% { opacity:1; transform:scaleY(1.3); }
+}
+
+.reveal {
+  opacity:0; transform:translateY(28px);
+  transition: opacity .7s ease, transform .7s ease;
+}
+.reveal.visible { opacity:1; transform:none; }
+
+/* ── Responsive ── */
+@media (max-width:900px) {
+  nav { padding:20px 24px; }
+  .nav-links { display:none; }
+  .hero { grid-template-columns:1fr; }
+  .hero-left { padding:120px 24px 60px; min-height:60vh; justify-content:flex-end; }
+  .hero-right { min-height:45vh; }
+  section { padding:72px 24px; }
+  .masonry { columns:2; }
+  .about-grid, .booking-wrap { grid-template-columns:1fr; gap:44px; }
+  .contact-grid { grid-template-columns:1fr; }
+  footer { flex-direction:column; gap:12px; text-align:center; }
+}
+@media (max-width:540px) {
+  .masonry { columns:1; }
+  .form-row { grid-template-columns:1fr; }
+  .service-list { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Nav -->
+<nav id="nav">
+  <a href="#" class="nav-logo" id="navLogo">YOUR NAME</a>
+  <ul class="nav-links">
+    <li><a href="#portfolio" data-en="Work" data-zh="作品">Work</a></li>
+    <li><a href="#about" data-en="About" data-zh="关于">About</a></li>
+    <li><a href="#booking" data-en="Booking" data-zh="预约">Booking</a></li>
+    <li><a href="#clients" data-en="Client Gallery" data-zh="客片取片">Client Gallery</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="lang-toggle" id="langBtn" onclick="toggleLang()">中文</button>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="home">
+  <div class="hero-left">
+    <span class="hero-tag" data-en="Portrait &amp; Event Photography" data-zh="人像 · 活动摄影">Portrait &amp; Event Photography</span>
+    <h1 class="hero-title" id="heroTitle">
+      Light &<br><em>Moment</em>
+    </h1>
+    <p class="hero-sub" data-en="Warm, film-inspired photography capturing the quiet beauty between moments." data-zh="以胶片般的温度，捕捉瞬间之间的静谧之美。">
+      Warm, film-inspired photography capturing the quiet beauty between moments.
+    </p>
+    <a href="#portfolio" class="hero-cta" data-en="View Work" data-zh="浏览作品">View Work</a>
+  </div>
+  <div class="hero-right">
+    <div class="hero-slideshow" id="heroSlideshow"></div>
+    <div class="slide-dots" id="slideDots"></div>
+    <div class="hero-scroll"><span data-en="Scroll" data-zh="滚动">Scroll</span></div>
+  </div>
+</section>
+
+<!-- Portfolio -->
+<section id="portfolio">
+  <span class="section-label" data-en="Selected Work" data-zh="精选作品">Selected Work</span>
+  <h2 class="section-title" data-en="The <em>Portfolio</em>" data-zh="作 <em>品 集</em>">The <em>Portfolio</em></h2>
+
+  <div class="filter-tabs">
+    <button class="filter-btn active" data-filter="all" onclick="filterPhotos(this,'all')" data-en="All" data-zh="全部">All</button>
+    <button class="filter-btn" data-filter="portrait" onclick="filterPhotos(this,'portrait')" data-en="Portrait" data-zh="人像">Portrait</button>
+    <button class="filter-btn" data-filter="event" onclick="filterPhotos(this,'event')" data-en="Events" data-zh="活动">Events</button>
+    <button class="filter-btn" data-filter="travel" onclick="filterPhotos(this,'travel')" data-en="Travel" data-zh="旅行">Travel</button>
+  </div>
+
+  <div class="masonry" id="masonry"></div>
+</section>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLb()">✕</button>
+  <button class="lb-prev" onclick="changeLb(-1)">‹</button>
+  <img id="lbImg" src="" alt="">
+  <button class="lb-next" onclick="changeLb(1)">›</button>
+</div>
+
+<!-- About -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-img reveal">
+      <img src="https://images.unsplash.com/photo-1502791451862-7bd8c1df43a7?w=800&q=80" alt="Photographer">
+    </div>
+    <div class="about-text reveal">
+      <span class="section-label" data-en="The Photographer" data-zh="关于摄影师">The Photographer</span>
+      <h2 class="section-title" style="margin-bottom:28px" data-en="About <em>Me</em>" data-zh="关 <em>于 我</em>">About <em>Me</em></h2>
+      <p id="bioText"></p>
+      <div class="about-services">
+        <span class="services-label" data-en="Services" data-zh="服务内容">Services</span>
+        <ul class="service-list">
+          <li data-en="Portrait Sessions" data-zh="人像拍摄">Portrait Sessions</li>
+          <li data-en="Wedding &amp; Engagement" data-zh="婚礼 &amp; 订婚">Wedding &amp; Engagement</li>
+          <li data-en="Family Portraits" data-zh="家庭照">Family Portraits</li>
+          <li data-en="Brand Photography" data-zh="品牌摄影">Brand Photography</li>
+        </ul>
+      </div>
+      <div class="about-gear">
+        <span class="services-label" data-en="Gear" data-zh="器材">Gear</span>
+        <div class="gear-body">
+          <div class="gear-row">
+            <span class="gear-cat" data-en="Body" data-zh="机身">Body</span>
+            <span class="gear-items">Sony A7R V</span>
+          </div>
+          <div class="gear-row">
+            <span class="gear-cat" data-en="Lenses" data-zh="镜头">Lenses</span>
+            <span class="gear-items">Sony 24mm GM · Sony 24–70mm GM II · Sony 70–200mm GM II · Zeiss Batis 40mm · Zeiss Batis 85mm</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Booking -->
+<section id="booking">
+  <div class="booking-wrap">
+    <div class="booking-info reveal">
+      <span class="section-label" data-en="Book a Session" data-zh="预约拍摄">Book a Session</span>
+      <h2 class="section-title" data-en="Let's <em>Create</em>" data-zh="开始 <em>创作</em>">Let's <em>Create</em></h2>
+      <p data-en="Every session begins with a conversation. Tell me about your vision and I'll take care of the rest." data-zh="每次拍摄都从一次对话开始。告诉我你的想法，其余的交给我。">
+        Every session begins with a conversation. Tell me about your vision and I'll take care of the rest.
+      </p>
+      <ol class="booking-steps">
+        <li>
+          <span class="step-num">01</span>
+          <div>
+            <strong data-en="Fill in the form" data-zh="填写预约表单">Fill in the form</strong><br>
+            <span style="font-size:12px;color:var(--muted)" data-en="Share your ideas and preferred dates" data-zh="分享你的想法和期望日期">Share your ideas and preferred dates</span>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">02</span>
+          <div>
+            <strong data-en="I'll reach out" data-zh="我来联系你">I'll reach out</strong><br>
+            <span style="font-size:12px;color:var(--muted)" data-en="Within 48 hours to confirm details" data-zh="48小时内确认细节">Within 48 hours to confirm details</span>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">03</span>
+          <div>
+            <strong data-en="We shoot" data-zh="开始拍摄">We shoot</strong><br>
+            <span style="font-size:12px;color:var(--muted)" data-en="Gallery delivered within 2 weeks" data-zh="2周内交付精修照片">Gallery delivered within 2 weeks</span>
+          </div>
+        </li>
+      </ol>
+    </div>
+    <div class="reveal">
+      <form class="contact-form" id="bookingForm" onsubmit="submitForm(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label data-en="Your Name" data-zh="姓名">Your Name</label>
+            <input type="text" placeholder="Jane Doe" required>
+          </div>
+          <div class="form-group">
+            <label data-en="Email" data-zh="邮箱">Email</label>
+            <input type="email" placeholder="jane@example.com" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label data-en="Session Type" data-zh="拍摄类型">Session Type</label>
+          <select required>
+            <option value="" data-en="Select type..." data-zh="请选择...">Select type...</option>
+            <option data-en="Portrait" data-zh="人像拍摄">Portrait</option>
+            <option data-en="Wedding / Engagement" data-zh="婚礼 / 订婚">Wedding / Engagement</option>
+            <option data-en="Corporate Event" data-zh="企业活动">Corporate Event</option>
+            <option data-en="Family" data-zh="家庭照">Family</option>
+            <option data-en="Other" data-zh="其他">Other</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label data-en="Preferred Date" data-zh="期望日期">Preferred Date</label>
+            <input type="date">
+          </div>
+          <div class="form-group">
+            <label data-en="Location" data-zh="拍摄地点">Location</label>
+            <input type="text" placeholder="San Francisco, CA">
+          </div>
+        </div>
+        <div class="form-group">
+          <label data-en="Tell me more" data-zh="更多想法">Tell me more</label>
+          <textarea placeholder="Share your vision, mood, special requests..."></textarea>
+        </div>
+        <button type="submit" class="btn-submit">
+          <span data-en="Send Inquiry" data-zh="发送预约">Send Inquiry</span> →
+        </button>
+        <div class="form-success" id="formSuccess">
+          <span data-en="✦ Thank you! I'll be in touch within 48 hours." data-zh="✦ 感谢你的预约！我会在48小时内与你联系。">
+            ✦ Thank you! I'll be in touch within 48 hours.
+          </span>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact">
+  <span class="section-label" data-en="Get in Touch" data-zh="联系方式">Get in Touch</span>
+  <h2 class="section-title" data-en="Say <em>Hello</em>" data-zh="来 <em>打招呼</em>">Say <em>Hello</em></h2>
+  <div class="contact-grid">
+    <div class="contact-card">
+      <div class="contact-card-icon">✉</div>
+      <span class="contact-card-label" data-en="Email" data-zh="邮箱">Email</span>
+      <a href="mailto:hello@yourname.com" class="contact-card-value" id="contactEmail">hello@yourname.com</a>
+    </div>
+    <div class="contact-card">
+      <div class="contact-card-icon">◎</div>
+      <span class="contact-card-label" data-en="Instagram" data-zh="Instagram">Instagram</span>
+      <a href="#" class="contact-card-value" id="contactIG">@yourname</a>
+    </div>
+    <div class="contact-card">
+      <div class="contact-card-icon">◈</div>
+      <span class="contact-card-label" data-en="Based In" data-zh="所在地">Based In</span>
+      <span class="contact-card-value" data-en="San Francisco Bay Area" data-zh="旧金山湾区">San Francisco Bay Area</span>
+    </div>
+  </div>
+</section>
+
+<!-- Client Pickup -->
+<section id="clients">
+  <span class="section-label" data-en="Client Gallery" data-zh="客片取片">Client Gallery</span>
+  <h2 class="section-title" data-en="Your <em>Photos</em>" data-zh="你 的 <em>照 片</em>">Your <em>Photos</em></h2>
+  <div class="client-gate">
+    <p data-en="Your photos are ready. Enter the access code shared by your photographer to view and download your gallery." data-zh="你的照片已准备好。请输入摄影师提供的专属取件码，查看并下载你的相册。">
+      Your photos are ready. Enter the access code shared by your photographer to view and download your gallery.
+    </p>
+    <div class="code-input-wrap">
+      <input class="code-input" id="codeInput" type="text" placeholder="Enter access code..." data-en-placeholder="Enter access code..." data-zh-placeholder="输入取件码...">
+      <button class="code-btn" onclick="checkCode()" data-en="Access" data-zh="查询">Access</button>
+    </div>
+    <div class="code-error" id="codeError" data-en="Code not found. Please check with your photographer." data-zh="未找到相关相册，请联系摄影师确认取件码。">
+      Code not found. Please check with your photographer.
+    </div>
+    <div class="album-result" id="albumResult"></div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <span id="footerName">YOUR NAME Photography</span>
+  <span>© 2025 · All images reserved</span>
+  <a href="#home" data-en="Back to top ↑" data-zh="返回顶部 ↑">Back to top ↑</a>
+</footer>
+
+<!-- Load config then init -->
+<script src="photos.js"></script>
+<script>
+// ── Language ──
+let lang = 'en';
+function toggleLang() {
+  lang = lang === 'en' ? 'zh' : 'en';
+  document.getElementById('langBtn').textContent = lang === 'en' ? '中文' : 'EN';
+  applyLang();
+}
+function applyLang() {
+  // data-en / data-zh elements
+  document.querySelectorAll('[data-en]').forEach(el => {
+    const val = el.getAttribute('data-' + lang);
+    if (val) el.innerHTML = val;
+  });
+  // Placeholders
+  document.querySelectorAll('[data-en-placeholder]').forEach(el => {
+    el.placeholder = el.getAttribute('data-' + lang + '-placeholder') || el.placeholder;
+  });
+  // Bio
+  document.getElementById('bioText').textContent =
+    lang === 'en' ? SITE_CONFIG.bioEn : SITE_CONFIG.bioZh;
+  // Filter buttons label
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    const key = 'data-' + lang;
+    if (btn.getAttribute(key)) btn.textContent = btn.getAttribute(key);
+  });
+}
+
+// ── Init site from config ──
+function initSite() {
+  // Name
+  document.title = SITE_CONFIG.name + ' Photography';
+  document.getElementById('navLogo').textContent = SITE_CONFIG.name.toUpperCase();
+  document.getElementById('footerName').textContent = SITE_CONFIG.name + ' Photography';
+  // Hero
+  document.getElementById('heroTitle').innerHTML = SITE_CONFIG.tagline.replace('&', '&amp;') + '<br><em>' + SITE_CONFIG.taglineZh + '</em>';
+  // Contact
+  const emailEl = document.getElementById('contactEmail');
+  emailEl.href = 'mailto:' + SITE_CONFIG.email;
+  emailEl.textContent = SITE_CONFIG.email;
+  const igEl = document.getElementById('contactIG');
+  if (SITE_CONFIG.instagram) {
+    igEl.href = 'https://instagram.com/' + SITE_CONFIG.instagram;
+    igEl.textContent = '@' + SITE_CONFIG.instagram;
+  }
+  // Bio
+  document.getElementById('bioText').textContent = SITE_CONFIG.bioEn;
+  // Photos
+  buildMasonry();
+}
+
+// ── Masonry ──
+let currentFilter = 'all';
+let lbIndex = 0;
+let visiblePhotos = [];
+
+function buildMasonry(filter) {
+  filter = filter || currentFilter;
+  const grid = document.getElementById('masonry');
+  grid.innerHTML = '';
+  visiblePhotos = PHOTOS.filter(p => filter === 'all' || p.category === filter);
+  visiblePhotos.forEach((photo, i) => {
+    const item = document.createElement('div');
+    item.className = 'masonry-item';
+    item.innerHTML = `<img src="${photo.src}" alt="${photo.alt}" loading="lazy">`;
+    item.onclick = () => openLb(i);
+    grid.appendChild(item);
+  });
+}
+
+function filterPhotos(btn, filter) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  buildMasonry(filter);
+}
+
+// ── Lightbox ──
+function openLb(i) {
+  lbIndex = i;
+  document.getElementById('lbImg').src = visiblePhotos[i].src.replace('w=800', 'w=1400');
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLb() { document.getElementById('lightbox').classList.remove('open'); }
+function changeLb(dir) {
+  lbIndex = (lbIndex + dir + visiblePhotos.length) % visiblePhotos.length;
+  document.getElementById('lbImg').src = visiblePhotos[lbIndex].src.replace('w=800', 'w=1400');
+}
+document.getElementById('lightbox').onclick = function(e) {
+  if (e.target === this) closeLb();
+};
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeLb();
+  if (e.key === 'ArrowRight') changeLb(1);
+  if (e.key === 'ArrowLeft') changeLb(-1);
+});
+
+// ── Client Pickup ──
+function checkCode() {
+  const code = document.getElementById('codeInput').value.trim().toLowerCase();
+  const album = CLIENT_ALBUMS.find(a => a.password.toLowerCase() === code);
+  const err = document.getElementById('codeError');
+  const result = document.getElementById('albumResult');
+  if (!album) {
+    err.style.display = 'block';
+    result.style.display = 'none';
+    return;
+  }
+  err.style.display = 'none';
+  result.style.display = 'block';
+  result.innerHTML = `
+    <div class="album-card">
+      <img src="${album.cover}" alt="${album.name}">
+      <div class="album-info">
+        <div class="album-name">${lang === 'zh' ? album.nameZh : album.name}</div>
+        <div class="album-date">${album.date}</div>
+        <a href="${album.link}" target="_blank" class="album-link">
+          ${lang === 'en' ? 'View Gallery' : '查看相册'}
+        </a>
+      </div>
+    </div>`;
+}
+
+// ── Form ──
+function submitForm(e) {
+  e.preventDefault();
+  document.getElementById('bookingForm').style.display = 'none';
+  document.getElementById('formSuccess').style.display = 'block';
+}
+
+// ── Scroll reveal ──
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(el => { if (el.isIntersecting) el.target.classList.add('visible'); });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── Nav scroll ──
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', scrollY > 60);
+});
+
+// ── Cursor ──
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top  = e.clientY + 'px';
+  ring.style.left   = e.clientX + 'px';
+  ring.style.top    = e.clientY + 'px';
+});
+
+// ── Hero Slideshow ──
+let slideIndex = 0;
+let slideTimer = null;
+
+function initSlideshow() {
+  const container = document.getElementById('heroSlideshow');
+  const dotsEl = document.getElementById('slideDots');
+  const heroPhotos = PHOTOS.slice(0, 6); // use first 6 photos
+
+  heroPhotos.forEach((photo, i) => {
+    const slide = document.createElement('div');
+    slide.className = 'hero-slide' + (i === 0 ? ' active' : '');
+    slide.innerHTML = `<img src="${photo.src.replace('w=800','w=1400')}" alt="${photo.alt}" loading="${i===0?'eager':'lazy'}">`;
+    container.appendChild(slide);
+
+    const dot = document.createElement('div');
+    dot.className = 'slide-dot' + (i === 0 ? ' active' : '');
+    dot.onclick = () => goToSlide(i);
+    dotsEl.appendChild(dot);
+  });
+
+  slideTimer = setInterval(() => goToSlide((slideIndex + 1) % heroPhotos.length), 4000);
+}
+
+function goToSlide(n) {
+  const slides = document.querySelectorAll('.hero-slide');
+  const dots = document.querySelectorAll('.slide-dot');
+  slides[slideIndex].classList.remove('active');
+  dots[slideIndex].classList.remove('active');
+  slideIndex = n;
+  slides[slideIndex].classList.add('active');
+  dots[slideIndex].classList.add('active');
+  clearInterval(slideTimer);
+  slideTimer = setInterval(() => goToSlide((slideIndex + 1) % slides.length), 4000);
+}
+
+// ── Start ──
+initSlideshow();
+initSite();
+</script>
+</body>
+</html>
