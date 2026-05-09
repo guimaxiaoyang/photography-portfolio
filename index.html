@@ -835,14 +835,12 @@ function initSite() {
   // Contact
   const emailEl = document.getElementById('contactEmail');
   emailEl.href = 'mailto:' + SITE_CONFIG.email;
-  emailEl.textContent = SITE_CONFIG.email;
+  emailEl.innerHTML = '<span style="color:var(--caramel);font-size:9px;letter-spacing:.18em;text-transform:uppercase;margin-right:6px;">Email</span>' + SITE_CONFIG.email;
   const igEl = document.getElementById('contactIG');
   if (SITE_CONFIG.instagram) {
     igEl.href = 'https://instagram.com/' + SITE_CONFIG.instagram;
-    igEl.textContent = '@' + SITE_CONFIG.instagram;
+    igEl.innerHTML = '<span style="color:var(--caramel);font-size:9px;letter-spacing:.18em;text-transform:uppercase;margin-right:6px;">IG</span>@' + SITE_CONFIG.instagram;
   }
-  // Update email link
-  emailEl.textContent = SITE_CONFIG.email;
   // Bio
   document.getElementById('bioText').textContent =
     lang === 'en'
