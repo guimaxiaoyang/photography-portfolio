@@ -87,11 +87,11 @@ nav.scrolled {
 
 /* ── Hero ── */
 .hero {
-  min-height: 92vh;
+  min-height: 52vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 120px 72px 80px;
+  padding: 120px 72px 56px;
   background: var(--cream);
   position: relative;
 }
@@ -102,11 +102,11 @@ nav.scrolled {
 }
 .hero-title {
   font-family:'Libre Baskerville', serif;
-  font-size: clamp(52px,7vw,110px);
-  font-weight:400; line-height:1.04;
+  font-size: clamp(36px,4.5vw,64px);
+  font-weight:400; line-height:1.08;
   color:var(--espresso); margin-bottom:0;
   opacity:0; animation: fadeUp .8s .6s forwards;
-  max-width: 900px;
+  max-width: 700px;
 }
 .hero-title em { font-style:normal; color:var(--mocha); }
 .hero-title-zh {
@@ -605,37 +605,36 @@ footer a:hover { color:var(--caramel); }
   </div>
 </nav>
 
-<!-- Hero -->
-<section class="hero" id="home">
-  <span class="hero-tag" data-en="Portrait &amp; Event Photography" data-zh="人像 · 活动摄影">Portrait &amp; Event Photography</span>
-  <h1 class="hero-title" id="heroTitle">
-    Light &amp; Moment<span class="hero-title-zh">光与瞬间</span>
-  </h1>
-  <p class="hero-sub" data-en="Warm, film-inspired photography capturing the quiet beauty between moments." data-zh="以胶片般的温度，捕捉瞬间之间的静谧之美。">
-    Warm, film-inspired photography capturing the quiet beauty between moments.
-  </p>
-  <a href="#portfolio" class="hero-cta" data-en="View Work" data-zh="浏览作品">View Work</a>
-</section>
-
-<!-- Featured Strip -->
-<div class="featured-strip">
-  <div class="featured-track-wrap" id="featuredWrap">
-    <div class="featured-track" id="featuredTrack"></div>
+<!-- Hero + Portfolio -->
+<section id="portfolio" style="padding:0; background:var(--cream);">
+  <div class="hero">
+    <span class="hero-tag" data-en="Portrait &amp; Event Photography" data-zh="人像 · 活动摄影">Portrait &amp; Event Photography</span>
+    <h1 class="hero-title" id="heroTitle">
+      Light &amp; Moment<span class="hero-title-zh">光与瞬间</span>
+    </h1>
+    <p class="hero-sub" data-en="Warm, film-inspired photography capturing the quiet beauty between moments." data-zh="以胶片般的温度，捕捉瞬间之间的静谧之美。">
+      Warm, film-inspired photography capturing the quiet beauty between moments.
+    </p>
   </div>
-  <div class="featured-hint" data-en="Drag to explore" data-zh="拖动浏览">Drag to explore</div>
-</div>
 
-<!-- Portfolio -->
-<section id="portfolio">
-  <span class="section-label" data-en="Selected Work" data-zh="精选作品">Selected Work</span>
-  <h2 class="section-title">Portfolio <span class="zh">作品集</span></h2>
-  <div class="filter-tabs">
-    <button class="filter-btn active" data-filter="all" onclick="filterSeries(this,'all')" data-en="All" data-zh="全部">All</button>
-    <button class="filter-btn" data-filter="portrait" onclick="filterSeries(this,'portrait')" data-en="Portrait" data-zh="人像">Portrait</button>
-    <button class="filter-btn" data-filter="event" onclick="filterSeries(this,'event')" data-en="Events" data-zh="活动">Events</button>
-    <button class="filter-btn" data-filter="travel" onclick="filterSeries(this,'travel')" data-en="Travel" data-zh="旅行">Travel</button>
+  <!-- Featured Strip -->
+  <div class="featured-strip">
+    <div class="featured-track-wrap" id="featuredWrap">
+      <div class="featured-track" id="featuredTrack"></div>
+    </div>
+    <div class="featured-hint" data-en="Drag to explore" data-zh="拖动浏览">Drag to explore</div>
   </div>
-  <div class="series-grid" id="seriesGrid"></div>
+
+  <!-- Series Grid -->
+  <div style="padding:72px 72px 88px;">
+    <div class="filter-tabs">
+      <button class="filter-btn active" data-filter="all" onclick="filterSeries(this,'all')" data-en="All" data-zh="全部">All</button>
+      <button class="filter-btn" data-filter="portrait" onclick="filterSeries(this,'portrait')" data-en="Portrait" data-zh="人像">Portrait</button>
+      <button class="filter-btn" data-filter="event" onclick="filterSeries(this,'event')" data-en="Events" data-zh="活动">Events</button>
+      <button class="filter-btn" data-filter="travel" onclick="filterSeries(this,'travel')" data-en="Travel" data-zh="旅行">Travel</button>
+    </div>
+    <div class="series-grid" id="seriesGrid"></div>
+  </div>
 </section>
 
 <!-- Series Detail Overlay -->
@@ -747,7 +746,7 @@ footer a:hover { color:var(--caramel); }
     <div class="about-text reveal">
       <span class="section-label" data-en="The Photographer" data-zh="关于摄影师">The Photographer</span>
       <h2 class="section-title" style="margin-bottom:28px">About <em>Me</em> <span class="zh">关于我</span></h2>
-      <p id="bioText"></p>
+      <p id="bioText">Based in the San Francisco Bay Area, I'm a portrait photographer with five years of experience — drawn to light, emotion, and the fleeting moments that deserve to be remembered.</p>
       <div class="about-services">
         <span class="services-label" data-en="Services" data-zh="服务内容">Services</span>
         <ul class="service-list">
