@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin · Photo Manager</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family:'DM Sans', sans-serif;
+  font-weight:300;
+  background:#F5F0E8;
+  color:#2A2018;
+  min-height:100vh;
+}
+
+/* ── Login ── */
+.login-screen {
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.login-box {
+  background:#FAF8F4;
+  border:1px solid rgba(90,70,50,0.12);
+  padding:48px;
+  width:360px;
+}
+.login-logo {
+  font-size:11px;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:#B8956A;
+  margin-bottom:32px;
+}
+.login-title {
+  font-size:22px;
+  font-weight:400;
+  color:#1C1410;
+  margin-bottom:8px;
+}
+.login-sub {
+  font-size:13px;
+  color:#8A7A6A;
+  margin-bottom:36px;
+}
+.login-input {
+  width:100%;
+  padding:12px 16px;
+  background:#F5F0E8;
+  border:1px solid rgba(90,70,50,0.15);
+  font-family:inherit;
+  font-size:14px;
+  color:#2A2018;
+  margin-bottom:12px;
+  outline:none;
+  letter-spacing:.08em;
+}
+.login-input:focus { border-color:#B8956A; }
+.login-btn {
+  width:100%;
+  padding:14px;
+  background:#1C1410;
+  color:#FAF8F4;
+  border:none;
+  font-family:inherit;
+  font-size:11px;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  cursor:pointer;
+  transition:background .2s;
+  margin-top:8px;
+}
+.login-btn:hover { background:#3D2B1F; }
+.login-error {
+  font-size:12px;
+  color:#C0392B;
+  margin-top:12px;
+  display:none;
+}
+
+/* ── App shell ── */
+.app { display:none; min-height:100vh; }
+
+header {
+  background:#1C1410;
+  padding:0 40px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  height:56px;
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+.header-logo {
+  font-size:11px;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:#B8956A;
+}
+.header-nav {
+  display:flex;
+  gap:4px;
+}
+.tab-btn {
+  padding:6px 18px;
+  background:transparent;
+  border:1px solid transparent;
+  color:rgba(250,248,244,.5);
+  font-family:inherit;
+  font-size:10.5px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  cursor:pointer;
+  transition:all .2s;
+  border-radius:2px;
+}
+.tab-btn.active, .tab-btn:hover {
+  background:rgba(250,248,244,.08);
+  color:rgba(250,248,244,.9);
+  border-color:rgba(250,248,244,.12);
+}
+.logout-btn {
+  font-size:10.5px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:rgba(250,248,244,.4);
+  background:none;
+  border:none;
+  cursor:pointer;
+  font-family:inherit;
+  transition:color .2s;
+}
+.logout-btn:hover { color:rgba(250,248,244,.8); }
+
+.main { padding:40px; max-width:1100px; }
+
+/* ── Tab panels ── */
+.panel { display:none; }
+.panel.active { display:block; }
+
+.panel-title {
+  font-size:20px;
+  font-weight:400;
+  color:#1C1410;
+  margin-bottom:6px;
+}
+.panel-sub {
+  font-size:13px;
+  color:#8A7A6A;
+  margin-bottom:32px;
+}
+
+/* ── Series list ── */
+.series-list { display:flex; flex-direction:column; gap:12px; }
+.series-row {
+  background:#FAF8F4;
+  border:1px solid rgba(90,70,50,0.1);
+  display:flex;
+  align-items:center;
+  gap:16px;
+  padding:16px 20px;
+}
+.series-drag-handle {
+  color:#C4A87A;
+  cursor:grab;
+  font-size:18px;
+  user-select:none;
+  flex-shrink:0;
+}
+.series-drag-handle:active { cursor:grabbing; }
+.series-cover {
+  width:56px;
+  height:56px;
+  object-fit:cover;
+  flex-shrink:0;
+  filter:sepia(8%) saturate(.85);
+}
+.series-cover-placeholder {
+  width:56px;
+  height:56px;
+  background:#EDE8DE;
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:20px;
+  color:#C4A87A;
+}
+.series-info { flex:1; min-width:0; }
+.series-name {
+  font-size:14px;
+  font-weight:400;
+  color:#1C1410;
+  margin-bottom:3px;
+}
+.series-meta {
+  font-size:11px;
+  color:#8A7A6A;
+  letter-spacing:.04em;
+}
+.series-badge {
+  font-size:9px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  padding:3px 8px;
+  border:1px solid rgba(90,70,50,0.15);
+  color:#8A7A6A;
+  border-radius:2px;
+}
+.series-actions { display:flex; gap:8px; }
+.action-btn {
+  padding:6px 14px;
+  font-family:inherit;
+  font-size:10px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  cursor:pointer;
+  border-radius:2px;
+  transition:all .2s;
+}
+.btn-edit {
+  background:transparent;
+  border:1px solid rgba(90,70,50,0.2);
+  color:#8A7A6A;
+}
+.btn-edit:hover { border-color:#B8956A; color:#B8956A; }
+.btn-delete {
+  background:transparent;
+  border:1px solid rgba(192,57,43,.25);
+  color:#C0392B;
+}
+.btn-delete:hover { background:rgba(192,57,43,.06); }
+
+.add-series-btn {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:14px 20px;
+  background:transparent;
+  border:1px dashed rgba(90,70,50,0.25);
+  color:#B8956A;
+  font-family:inherit;
+  font-size:10.5px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  cursor:pointer;
+  margin-top:12px;
+  transition:all .2s;
+  width:100%;
+}
+.add-series-btn:hover { border-color:#B8956A; background:rgba(184,149,106,.05); }
+
+/* ── Modal ── */
+.modal-overlay {
+  position:fixed;
+  inset:0;
+  background:rgba(28,20,16,.6);
+  z-index:200;
+  display:none;
+  align-items:flex-start;
+  justify-content:center;
+  padding:40px 20px;
+  overflow-y:auto;
+}
+.modal-overlay.open { display:flex; }
+.modal {
+  background:#FAF8F4;
+  width:100%;
+  max-width:680px;
+  border:1px solid rgba(90,70,50,0.12);
+}
+.modal-header {
+  padding:24px 28px 20px;
+  border-bottom:1px solid rgba(90,70,50,0.1);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.modal-title { font-size:16px; font-weight:400; color:#1C1410; }
+.modal-close {
+  background:none;
+  border:none;
+  font-size:20px;
+  color:#8A7A6A;
+  cursor:pointer;
+  line-height:1;
+}
+.modal-body { padding:28px; }
+.modal-footer {
+  padding:20px 28px;
+  border-top:1px solid rgba(90,70,50,0.1);
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+}
+
+/* ── Form ── */
+.form-group { margin-bottom:20px; }
+.form-label {
+  display:block;
+  font-size:9.5px;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:#B8956A;
+  margin-bottom:8px;
+}
+.form-input, .form-select {
+  width:100%;
+  padding:10px 14px;
+  background:#F5F0E8;
+  border:1px solid rgba(90,70,50,0.15);
+  font-family:inherit;
+  font-size:13px;
+  color:#2A2018;
+  outline:none;
+  border-radius:2px;
+}
+.form-input:focus, .form-select:focus { border-color:#B8956A; }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+
+/* ── Upload zone ── */
+.upload-zone {
+  border:1.5px dashed rgba(90,70,50,0.25);
+  padding:32px;
+  text-align:center;
+  cursor:pointer;
+  transition:all .25s;
+  background:transparent;
+  position:relative;
+}
+.upload-zone:hover, .upload-zone.dragover {
+  border-color:#B8956A;
+  background:rgba(184,149,106,.04);
+}
+.upload-zone input[type=file] {
+  position:absolute;
+  inset:0;
+  opacity:0;
+  cursor:pointer;
+  width:100%;
+  height:100%;
+}
+.upload-icon { font-size:28px; margin-bottom:8px; color:#C4A87A; }
+.upload-text { font-size:13px; color:#8A7A6A; line-height:1.7; }
+.upload-progress {
+  margin-top:16px;
+  display:none;
+}
+.progress-bar-wrap {
+  height:3px;
+  background:rgba(90,70,50,0.1);
+  border-radius:2px;
+  overflow:hidden;
+  margin-bottom:6px;
+}
+.progress-bar {
+  height:100%;
+  background:#B8956A;
+  width:0%;
+  transition:width .3s;
+}
+.progress-text { font-size:11px; color:#8A7A6A; }
+
+/* ── Photo grid in modal ── */
+.photo-grid {
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  gap:8px;
+  margin-top:16px;
+}
+.photo-thumb {
+  aspect-ratio:1;
+  position:relative;
+  overflow:hidden;
+  background:#EDE8DE;
+  cursor:grab;
+}
+.photo-thumb.dragging { opacity:.4; }
+.photo-thumb img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  filter:sepia(6%) saturate(.85);
+  pointer-events:none;
+}
+.photo-thumb-overlay {
+  position:absolute;
+  inset:0;
+  background:rgba(28,20,16,.45);
+  opacity:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  transition:opacity .2s;
+}
+.photo-thumb:hover .photo-thumb-overlay { opacity:1; }
+.thumb-btn {
+  background:rgba(250,248,244,.9);
+  border:none;
+  width:28px;
+  height:28px;
+  border-radius:50%;
+  cursor:pointer;
+  font-size:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#1C1410;
+  transition:background .15s;
+}
+.thumb-btn:hover { background:#FAF8F4; }
+.cover-badge {
+  position:absolute;
+  top:6px;
+  left:6px;
+  background:#B8956A;
+  color:#FAF8F4;
+  font-size:8px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  padding:2px 6px;
+}
+.drag-hint {
+  font-size:11px;
+  color:#8A7A6A;
+  margin-top:8px;
+  text-align:center;
+}
+
+/* ── Buttons ── */
+.btn-primary {
+  padding:10px 24px;
+  background:#1C1410;
+  color:#FAF8F4;
+  border:none;
+  font-family:inherit;
+  font-size:10.5px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  cursor:pointer;
+  transition:background .2s;
+  border-radius:2px;
+}
+.btn-primary:hover { background:#3D2B1F; }
+.btn-secondary {
+  padding:10px 24px;
+  background:transparent;
+  color:#8A7A6A;
+  border:1px solid rgba(90,70,50,0.2);
+  font-family:inherit;
+  font-size:10.5px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  cursor:pointer;
+  transition:all .2s;
+  border-radius:2px;
+}
+.btn-secondary:hover { border-color:#B8956A; color:#B8956A; }
+
+/* ── Toast ── */
+.toast {
+  position:fixed;
+  bottom:32px;
+  right:32px;
+  background:#1C1410;
+  color:#FAF8F4;
+  padding:12px 20px;
+  font-size:12px;
+  letter-spacing:.04em;
+  z-index:999;
+  transform:translateY(80px);
+  opacity:0;
+  transition:all .3s ease;
+  border-radius:2px;
+}
+.toast.show { transform:translateY(0); opacity:1; }
+
+/* ── Save bar ── */
+.save-bar {
+  position:fixed;
+  bottom:0; left:0; right:0;
+  background:#1C1410;
+  padding:14px 40px;
+  display:none;
+  align-items:center;
+  justify-content:space-between;
+  z-index:150;
+}
+.save-bar.visible { display:flex; }
+.save-bar-text { font-size:12px; color:rgba(250,248,244,.7); letter-spacing:.04em; }
+.save-bar-actions { display:flex; gap:10px; }
+
+/* ── Settings ── */
+.settings-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+.settings-card {
+  background:#FAF8F4;
+  border:1px solid rgba(90,70,50,0.1);
+  padding:24px;
+}
+.settings-card-title {
+  font-size:10px;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:#B8956A;
+  margin-bottom:16px;
+}
+</style>
+</head>
+<body>
+
+<!-- Login -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">Light & Moment</div>
+    <div class="login-title">Admin</div>
+    <div class="login-sub">Enter your password to manage your portfolio.</div>
+    <input type="password" class="login-input" id="loginInput" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" onclick="doLogin()">Enter →</button>
+    <div class="login-error" id="loginError">Incorrect password.</div>
+  </div>
+</div>
+
+<!-- App -->
+<div class="app" id="app">
+  <header>
+    <div class="header-logo">Admin · Light & Moment</div>
+    <div class="header-nav">
+      <button class="tab-btn active" onclick="switchTab('series', this)">Series</button>
+      <button class="tab-btn" onclick="switchTab('featured', this)">Featured</button>
+      <button class="tab-btn" onclick="switchTab('clients', this)">Client Albums</button>
+      <button class="tab-btn" onclick="switchTab('settings', this)">Settings</button>
+    </div>
+    <button class="logout-btn" onclick="logout()">Log out</button>
+  </header>
+
+  <div class="main">
+
+    <!-- Series Panel -->
+    <div class="panel active" id="panel-series">
+      <div class="panel-title">Photo Series</div>
+      <div class="panel-sub">Drag to reorder. Click Edit to manage photos within a series.</div>
+      <div class="series-list" id="seriesList"></div>
+      <button class="add-series-btn" onclick="openNewSeries()">+ Add New Series</button>
+    </div>
+
+    <!-- Featured Panel -->
+    <div class="panel" id="panel-featured">
+      <div class="panel-title">Featured Strip</div>
+      <div class="panel-sub">Choose up to 5 photos to display in the homepage strip. Drag to reorder.</div>
+      <div class="photo-grid" id="featuredGrid" style="grid-template-columns:repeat(5,1fr)"></div>
+      <button class="add-series-btn" style="margin-top:16px" onclick="openFeaturedPicker()">+ Add Featured Photo</button>
+      <div class="drag-hint">Drag photos to reorder · Hover to remove</div>
+    </div>
+
+    <!-- Clients Panel -->
+    <div class="panel" id="panel-clients">
+      <div class="panel-title">Client Albums</div>
+      <div class="panel-sub">Manage private client galleries with access codes.</div>
+      <div class="series-list" id="clientList"></div>
+      <button class="add-series-btn" onclick="openNewClient()">+ Add Client Album</button>
+    </div>
+
+    <!-- Settings Panel -->
+    <div class="panel" id="panel-settings">
+      <div class="panel-title">Site Settings</div>
+      <div class="panel-sub">Update your name, bio, and contact information.</div>
+      <div class="settings-grid">
+        <div class="settings-card">
+          <div class="settings-card-title">Identity</div>
+          <div class="form-group">
+            <label class="form-label">Brand Name (EN)</label>
+            <input class="form-input" id="cfg-name" placeholder="Your Name">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tagline (EN)</label>
+            <input class="form-input" id="cfg-tagline" placeholder="Light & Moment">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tagline (中文)</label>
+            <input class="form-input" id="cfg-taglineZh" placeholder="光与瞬间">
+          </div>
+        </div>
+        <div class="settings-card">
+          <div class="settings-card-title">Contact</div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input class="form-input" id="cfg-email" placeholder="hello@yourname.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Instagram (without @)</label>
+            <input class="form-input" id="cfg-instagram" placeholder="yourname">
+          </div>
+        </div>
+        <div class="settings-card" style="grid-column:1/-1">
+          <div class="settings-card-title">Bio</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">English</label>
+              <textarea class="form-input" id="cfg-bioEn" rows="4" style="resize:vertical"></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">中文</label>
+              <textarea class="form-input" id="cfg-bioZh" rows="4" style="resize:vertical"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:24px">
+        <button class="btn-primary" onclick="saveSettings()">Save Settings →</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Series Modal -->
+<div class="modal-overlay" id="seriesModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="seriesModalTitle">New Series</div>
+      <button class="modal-close" onclick="closeModal('seriesModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Series Name</label>
+          <input class="form-input" id="s-name" placeholder="Sarah · Golden Hour">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Date</label>
+          <input class="form-input" id="s-date" placeholder="Oct 2024">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Category</label>
+          <select class="form-select" id="s-category">
+            <option value="portrait">Portrait</option>
+            <option value="event">Events</option>
+            <option value="travel">Travel</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Series ID (no spaces)</label>
+          <input class="form-input" id="s-id" placeholder="portrait-sarah-2024">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Upload Photos</label>
+        <div class="upload-zone" id="uploadZone">
+          <input type="file" accept="image/*" multiple onchange="handleFileSelect(event)">
+          <div class="upload-icon">↑</div>
+          <div class="upload-text">Drag & drop photos here, or click to browse<br><span style="font-size:11px;opacity:.7">JPG, PNG · Max 10MB each · Multiple files supported</span></div>
+        </div>
+        <div class="upload-progress" id="uploadProgress">
+          <div class="progress-bar-wrap"><div class="progress-bar" id="progressBar"></div></div>
+          <div class="progress-text" id="progressText">Uploading...</div>
+        </div>
+      </div>
+
+      <div class="form-group" id="photoGridWrap" style="display:none">
+        <label class="form-label">Photos — Drag to reorder · First photo = Cover · Hover to delete</label>
+        <div class="photo-grid" id="photoGrid"></div>
+        <div class="drag-hint">Drag photos to reorder</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('seriesModal')">Cancel</button>
+      <button class="btn-primary" onclick="saveSeries()">Save Series →</button>
+    </div>
+  </div>
+</div>
+
+<!-- Client Modal -->
+<div class="modal-overlay" id="clientModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="clientModalTitle">New Client Album</div>
+      <button class="modal-close" onclick="closeModal('clientModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Client Name (EN)</label>
+          <input class="form-input" id="c-name" placeholder="Sarah & Tom">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Client Name (中文)</label>
+          <input class="form-input" id="c-nameZh" placeholder="S & T 婚礼">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Date</label>
+          <input class="form-input" id="c-date" type="date">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Access Code</label>
+          <input class="form-input" id="c-password" placeholder="e.g. sarah2024">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Gallery Link (Google Photos / Pixieset)</label>
+        <input class="form-input" id="c-link" placeholder="https://photos.google.com/...">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Cover Photo</label>
+        <div class="upload-zone" id="clientUploadZone">
+          <input type="file" accept="image/*" onchange="handleClientCover(event)">
+          <div class="upload-icon">↑</div>
+          <div class="upload-text" id="clientUploadText">Click to upload cover photo</div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('clientModal')">Cancel</button>
+      <button class="btn-primary" onclick="saveClient()">Save Album →</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Save bar -->
+<div class="save-bar" id="saveBar">
+  <div class="save-bar-text">You have unsaved changes — export updated photos.js to apply them to your site.</div>
+  <div class="save-bar-actions">
+    <button class="btn-secondary" style="color:rgba(250,248,244,.6);border-color:rgba(250,248,244,.2)" onclick="exportPhotosJS()">Export photos.js ↓</button>
+  </div>
+</div>
+
+<script>
+// ── Config ──
+const CLOUD_NAME = 'dpadfus0q';
+const UPLOAD_PRESET = 'photography_portfolio';
+const ADMIN_PASSWORD = 'lightmoment2025'; // Change this!
+
+// ── State ──
+let series = [];
+let clients = [];
+let featured = [];
+let config = {};
+let editingSeriesIdx = null;
+let editingClientIdx = null;
+let currentPhotos = []; // photos in open modal
+let clientCoverUrl = '';
+let hasChanges = false;
+
+// ── Login ──
+function doLogin() {
+  const pw = document.getElementById('loginInput').value;
+  if (pw === ADMIN_PASSWORD) {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    loadFromStorage();
+  } else {
+    document.getElementById('loginError').style.display = 'block';
+  }
+}
+function logout() {
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('loginInput').value = '';
+}
+
+// ── Storage ──
+function loadFromStorage() {
+  try {
+    series = JSON.parse(localStorage.getItem('lm_series') || '[]');
+    clients = JSON.parse(localStorage.getItem('lm_clients') || '[]');
+    featured = JSON.parse(localStorage.getItem('lm_featured') || '[]');
+    config = JSON.parse(localStorage.getItem('lm_config') || '{}');
+  } catch(e) { series=[]; clients=[]; featured=[]; config={}; }
+
+  // Defaults
+  if (!config.name) config = {
+    name:'Your Name', tagline:'Light & Moment', taglineZh:'光与瞬间',
+    email:'hello@yourname.com', instagram:'yourname',
+    bioEn:'Based in the San Francisco Bay Area, I\'m a portrait photographer with five years of experience.',
+    bioZh:'旧金山湾区人像摄影师，五年拍摄经验。'
+  };
+
+  renderSeries();
+  renderClients();
+  renderFeatured();
+  loadSettings();
+}
+
+function save() {
+  localStorage.setItem('lm_series', JSON.stringify(series));
+  localStorage.setItem('lm_clients', JSON.stringify(clients));
+  localStorage.setItem('lm_featured', JSON.stringify(featured));
+  localStorage.setItem('lm_config', JSON.stringify(config));
+  hasChanges = true;
+  document.getElementById('saveBar').classList.add('visible');
+}
+
+// ── Tabs ──
+function switchTab(name, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── Render Series ──
+function renderSeries() {
+  const list = document.getElementById('seriesList');
+  list.innerHTML = '';
+  series.forEach((s, i) => {
+    const row = document.createElement('div');
+    row.className = 'series-row';
+    row.draggable = true;
+    row.dataset.idx = i;
+    row.innerHTML = `
+      <div class="series-drag-handle" title="Drag to reorder">⠿</div>
+      ${s.cover
+        ? `<img class="series-cover" src="${s.cover}" alt="${s.name}">`
+        : `<div class="series-cover-placeholder">📷</div>`}
+      <div class="series-info">
+        <div class="series-name">${s.name}</div>
+        <div class="series-meta">${s.date} · ${s.photos.length} photo${s.photos.length!==1?'s':''}</div>
+      </div>
+      <span class="series-badge">${s.category}</span>
+      <div class="series-actions">
+        <button class="action-btn btn-edit" onclick="editSeries(${i})">Edit</button>
+        <button class="action-btn btn-delete" onclick="deleteSeries(${i})">Delete</button>
+      </div>`;
+    // Drag events
+    row.addEventListener('dragstart', e => { e.dataTransfer.setData('text/plain', i); row.style.opacity='.4'; });
+    row.addEventListener('dragend', () => row.style.opacity='1');
+    row.addEventListener('dragover', e => e.preventDefault());
+    row.addEventListener('drop', e => {
+      e.preventDefault();
+      const from = +e.dataTransfer.getData('text/plain');
+      const to = +row.dataset.idx;
+      if (from === to) return;
+      const item = series.splice(from, 1)[0];
+      series.splice(to, 0, item);
+      save(); renderSeries();
+    });
+    list.appendChild(row);
+  });
+}
+
+// ── Series Modal ──
+function openNewSeries() {
+  editingSeriesIdx = null;
+  currentPhotos = [];
+  document.getElementById('s-name').value = '';
+  document.getElementById('s-date').value = '';
+  document.getElementById('s-id').value = '';
+  document.getElementById('s-category').value = 'portrait';
+  document.getElementById('photoGridWrap').style.display = 'none';
+  document.getElementById('seriesModalTitle').textContent = 'New Series';
+  renderPhotoGrid();
+  openModal('seriesModal');
+}
+
+function editSeries(i) {
+  editingSeriesIdx = i;
+  const s = series[i];
+  currentPhotos = [...s.photos];
+  document.getElementById('s-name').value = s.name;
+  document.getElementById('s-date').value = s.date;
+  document.getElementById('s-id').value = s.id;
+  document.getElementById('s-category').value = s.category;
+  document.getElementById('seriesModalTitle').textContent = 'Edit Series';
+  if (currentPhotos.length > 0) {
+    document.getElementById('photoGridWrap').style.display = 'block';
+  }
+  renderPhotoGrid();
+  openModal('seriesModal');
+}
+
+function deleteSeries(i) {
+  if (!confirm(`Delete "${series[i].name}"? This cannot be undone.`)) return;
+  series.splice(i, 1);
+  save(); renderSeries();
+  showToast('Series deleted');
+}
+
+function saveSeries() {
+  const name = document.getElementById('s-name').value.trim();
+  const date = document.getElementById('s-date').value.trim();
+  const id = document.getElementById('s-id').value.trim() || name.toLowerCase().replace(/[^a-z0-9]/g,'-');
+  const category = document.getElementById('s-category').value;
+  if (!name) { alert('Please enter a series name.'); return; }
+
+  const obj = {
+    id, name, date, category,
+    cover: currentPhotos[0] || '',
+    photos: [...currentPhotos]
+  };
+
+  if (editingSeriesIdx !== null) {
+    series[editingSeriesIdx] = obj;
+  } else {
+    series.push(obj);
+  }
+  save(); renderSeries();
+  closeModal('seriesModal');
+  showToast(editingSeriesIdx !== null ? 'Series updated ✓' : 'Series added ✓');
+}
+
+// ── Photo Grid (in modal) ──
+function renderPhotoGrid() {
+  const grid = document.getElementById('photoGrid');
+  grid.innerHTML = '';
+  if (currentPhotos.length === 0) return;
+  document.getElementById('photoGridWrap').style.display = 'block';
+
+  currentPhotos.forEach((url, i) => {
+    const div = document.createElement('div');
+    div.className = 'photo-thumb';
+    div.draggable = true;
+    div.dataset.idx = i;
+    div.innerHTML = `
+      <img src="${url}" alt="">
+      ${i === 0 ? '<div class="cover-badge">Cover</div>' : ''}
+      <div class="photo-thumb-overlay">
+        <button class="thumb-btn" title="Delete" onclick="removePhoto(${i})">✕</button>
+        ${i > 0 ? `<button class="thumb-btn" title="Set as cover" onclick="setCover(${i})">★</button>` : ''}
+      </div>`;
+    div.addEventListener('dragstart', e => { e.dataTransfer.setData('text/plain', i); div.classList.add('dragging'); });
+    div.addEventListener('dragend', () => div.classList.remove('dragging'));
+    div.addEventListener('dragover', e => e.preventDefault());
+    div.addEventListener('drop', e => {
+      e.preventDefault();
+      const from = +e.dataTransfer.getData('text/plain');
+      const to = +div.dataset.idx;
+      if (from === to) return;
+      const item = currentPhotos.splice(from, 1)[0];
+      currentPhotos.splice(to, 0, item);
+      renderPhotoGrid();
+    });
+    grid.appendChild(div);
+  });
+}
+
+function removePhoto(i) {
+  currentPhotos.splice(i, 1);
+  renderPhotoGrid();
+}
+
+function setCover(i) {
+  const item = currentPhotos.splice(i, 1)[0];
+  currentPhotos.unshift(item);
+  renderPhotoGrid();
+  showToast('Cover photo updated');
+}
+
+// ── Cloudinary Upload ──
+async function handleFileSelect(event) {
+  const files = Array.from(event.target.files);
+  if (!files.length) return;
+
+  const progress = document.getElementById('uploadProgress');
+  const bar = document.getElementById('progressBar');
+  const text = document.getElementById('progressText');
+  progress.style.display = 'block';
+
+  let uploaded = 0;
+  for (const file of files) {
+    text.textContent = `Uploading ${uploaded + 1} of ${files.length}...`;
+    bar.style.width = (uploaded / files.length * 100) + '%';
+
+    try {
+      const url = await uploadToCloudinary(file);
+      currentPhotos.push(url);
+      uploaded++;
+      bar.style.width = (uploaded / files.length * 100) + '%';
+    } catch(e) {
+      showToast('Upload failed: ' + file.name);
+    }
+  }
+
+  text.textContent = `✓ ${uploaded} photo${uploaded!==1?'s':''} uploaded`;
+  bar.style.width = '100%';
+  renderPhotoGrid();
+  setTimeout(() => { progress.style.display = 'none'; bar.style.width = '0%'; }, 2000);
+}
+
+async function handleClientCover(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  document.getElementById('clientUploadText').textContent = 'Uploading...';
+  try {
+    clientCoverUrl = await uploadToCloudinary(file);
+    document.getElementById('clientUploadText').textContent = '✓ Cover uploaded';
+  } catch(e) {
+    document.getElementById('clientUploadText').textContent = 'Upload failed';
+  }
+}
+
+function uploadToCloudinary(file) {
+  return new Promise((resolve, reject) => {
+    const fd = new FormData();
+    fd.append('file', file);
+    fd.append('upload_preset', UPLOAD_PRESET);
+    fd.append('folder', 'portfolio');
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`);
+    xhr.onload = () => {
+      const res = JSON.parse(xhr.responseText);
+      if (res.secure_url) resolve(res.secure_url);
+      else reject(new Error(res.error?.message || 'Upload failed'));
+    };
+    xhr.onerror = () => reject(new Error('Network error'));
+    xhr.send(fd);
+  });
+}
+
+// ── Featured ──
+function renderFeatured() {
+  const grid = document.getElementById('featuredGrid');
+  grid.innerHTML = '';
+  featured.forEach((url, i) => {
+    const div = document.createElement('div');
+    div.className = 'photo-thumb';
+    div.draggable = true;
+    div.dataset.idx = i;
+    div.innerHTML = `
+      <img src="${url}" alt="">
+      <div class="photo-thumb-overlay">
+        <button class="thumb-btn" onclick="removeFeatured(${i})">✕</button>
+      </div>`;
+    div.addEventListener('dragstart', e => { e.dataTransfer.setData('text/plain', i); });
+    div.addEventListener('dragover', e => e.preventDefault());
+    div.addEventListener('drop', e => {
+      e.preventDefault();
+      const from = +e.dataTransfer.getData('text/plain');
+      const to = +div.dataset.idx;
+      if (from === to) return;
+      const item = featured.splice(from, 1)[0];
+      featured.splice(to, 0, item);
+      save(); renderFeatured();
+    });
+    grid.appendChild(div);
+  });
+}
+
+function removeFeatured(i) {
+  featured.splice(i, 1);
+  save(); renderFeatured();
+}
+
+function openFeaturedPicker() {
+  if (featured.length >= 5) { showToast('Maximum 5 featured photos'); return; }
+  const url = prompt('Paste a photo URL, or pick from your series covers:');
+  if (url) { featured.push(url); save(); renderFeatured(); }
+}
+
+// ── Clients ──
+function renderClients() {
+  const list = document.getElementById('clientList');
+  list.innerHTML = '';
+  clients.forEach((c, i) => {
+    const row = document.createElement('div');
+    row.className = 'series-row';
+    row.innerHTML = `
+      ${c.cover ? `<img class="series-cover" src="${c.cover}" alt="${c.name}">` : '<div class="series-cover-placeholder">🖼</div>'}
+      <div class="series-info">
+        <div class="series-name">${c.name}</div>
+        <div class="series-meta">${c.date} · Code: ${c.password}</div>
+      </div>
+      <div class="series-actions">
+        <button class="action-btn btn-edit" onclick="editClient(${i})">Edit</button>
+        <button class="action-btn btn-delete" onclick="deleteClient(${i})">Delete</button>
+      </div>`;
+    list.appendChild(row);
+  });
+}
+
+function openNewClient() {
+  editingClientIdx = null;
+  clientCoverUrl = '';
+  ['c-name','c-nameZh','c-date','c-link','c-password'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('clientUploadText').textContent = 'Click to upload cover photo';
+  document.getElementById('clientModalTitle').textContent = 'New Client Album';
+  openModal('clientModal');
+}
+
+function editClient(i) {
+  editingClientIdx = i;
+  const c = clients[i];
+  clientCoverUrl = c.cover || '';
+  document.getElementById('c-name').value = c.name;
+  document.getElementById('c-nameZh').value = c.nameZh || '';
+  document.getElementById('c-date').value = c.date;
+  document.getElementById('c-link').value = c.link;
+  document.getElementById('c-password').value = c.password;
+  document.getElementById('clientUploadText').textContent = c.cover ? '✓ Cover uploaded' : 'Click to upload cover photo';
+  document.getElementById('clientModalTitle').textContent = 'Edit Client Album';
+  openModal('clientModal');
+}
+
+function deleteClient(i) {
+  if (!confirm('Delete this client album?')) return;
+  clients.splice(i, 1);
+  save(); renderClients();
+  showToast('Album deleted');
+}
+
+function saveClient() {
+  const name = document.getElementById('c-name').value.trim();
+  if (!name) { alert('Please enter a client name.'); return; }
+  const obj = {
+    name,
+    nameZh: document.getElementById('c-nameZh').value.trim(),
+    date: document.getElementById('c-date').value,
+    password: document.getElementById('c-password').value.trim(),
+    link: document.getElementById('c-link').value.trim(),
+    cover: clientCoverUrl
+  };
+  if (editingClientIdx !== null) clients[editingClientIdx] = obj;
+  else clients.push(obj);
+  save(); renderClients();
+  closeModal('clientModal');
+  showToast('Client album saved ✓');
+}
+
+// ── Settings ──
+function loadSettings() {
+  document.getElementById('cfg-name').value = config.name || '';
+  document.getElementById('cfg-tagline').value = config.tagline || '';
+  document.getElementById('cfg-taglineZh').value = config.taglineZh || '';
+  document.getElementById('cfg-email').value = config.email || '';
+  document.getElementById('cfg-instagram').value = config.instagram || '';
+  document.getElementById('cfg-bioEn').value = config.bioEn || '';
+  document.getElementById('cfg-bioZh').value = config.bioZh || '';
+}
+
+function saveSettings() {
+  config.name = document.getElementById('cfg-name').value.trim();
+  config.tagline = document.getElementById('cfg-tagline').value.trim();
+  config.taglineZh = document.getElementById('cfg-taglineZh').value.trim();
+  config.email = document.getElementById('cfg-email').value.trim();
+  config.instagram = document.getElementById('cfg-instagram').value.trim();
+  config.bioEn = document.getElementById('cfg-bioEn').value.trim();
+  config.bioZh = document.getElementById('cfg-bioZh').value.trim();
+  save();
+  showToast('Settings saved ✓');
+}
+
+// ── Export photos.js ──
+function exportPhotosJS() {
+  const js = `// Auto-generated by Light & Moment Admin
+// Last updated: ${new Date().toLocaleString()}
+
+const SITE_CONFIG = ${JSON.stringify(config, null, 2)};
+
+const SERIES = ${JSON.stringify(series, null, 2)};
+
+const CLIENT_ALBUMS = ${JSON.stringify(clients, null, 2)};
+
+const FEATURED_PHOTOS = ${JSON.stringify(featured, null, 2)};
+`;
+  const blob = new Blob([js], {type:'text/javascript'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'photos.js';
+  a.click();
+  showToast('photos.js exported! Upload to GitHub ✓');
+}
+
+// ── Modal helpers ──
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+// ── Toast ──
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ── Init ──
+document.getElementById('loginInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doLogin();
+});
+</script>
+</body>
+</html>
