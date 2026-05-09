@@ -946,7 +946,7 @@ function openSeries(s) {
     img.onload = () => {
       const r = img.naturalWidth / img.naturalHeight;
       ratios[i] = r;
-      orientations[i] = r >= 1 ? 'landscape' : 'portrait';
+      orientations[i] = r > 1.2 ? 'landscape' : 'portrait';
       if (++done === s.photos.length) renderDetailPhotos(s, photosEl, orientations, ratios);
     };
     img.onerror = () => {
@@ -963,36 +963,15 @@ function renderDetailPhotos(s, container, orientations, ratios) {
   let i = 0;
   while (i < s.photos.length) {
     if (orientations[i] === 'landscape') {
-      const ratio = ratios[i];
-      // If ratio < 1.6 (close to square), pair with next landscape if available
-      const canPair = ratio < 1.6 && i + 1 < s.photos.length && orientations[i + 1] === 'landscape';
-      if (canPair) {
-        const row = document.createElement('div');
-        row.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;';
-        [0, 1].forEach(offset => {
-          const idx = i + offset;
-          const div = document.createElement('div');
-          div.className = 'detail-photo';
-          div.style.aspectRatio = '3/2';
-          div.innerHTML = `<img src="${s.photos[idx]}" alt="${s.name} ${idx+1}" loading="lazy" style="width:100%;height:100%;object-fit:cover;">`;
-          div.onclick = () => openLb(idx);
-          row.appendChild(div);
-        });
-        container.appendChild(row);
-        i += 2;
-      } else {
-        // Wide landscape, full row
-        const row = document.createElement('div');
-        row.style.cssText = 'margin-bottom:8px;';
-        const div = document.createElement('div');
-        div.className = 'detail-photo';
-        div.style.cssText = `aspect-ratio:${ratio > 1.8 ? '16/9' : '3/2'};`;
-        div.innerHTML = `<img src="${s.photos[i]}" alt="${s.name} ${i+1}" loading="lazy" style="width:100%;height:100%;object-fit:cover;">`;
-        div.onclick = () => openLb(i);
-        row.appendChild(div);
-        container.appendChild(row);
-        i += 1;
-      }
+      const row = document.createElement('div');
+      row.style.cssText = 'margin-bottom:8px;';
+      const div = document.createElement('div');
+      div.className = 'detail-photo';
+      div.innerHTML = `<img src="${s.photos[i]}" alt="${s.name} ${i+1}" loading="lazy" style="width:100%;display:block;height:auto;">`;
+      div.onclick = () => openLb(i);
+      row.appendChild(div);
+      container.appendChild(row);
+      i++;
     } else {
       const batch = [];
       while (i < s.photos.length && orientations[i] === 'portrait' && batch.length < 3) {
