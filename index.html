@@ -222,7 +222,7 @@ nav.scrolled {
 }
 .series-card {
   cursor:none; position:relative; overflow:hidden;
-  aspect-ratio:3/4; background:var(--warm);
+  aspect-ratio:2/3; background:var(--warm);
 }
 .series-card img {
   width:100%; height:100%; object-fit:cover;
@@ -600,6 +600,12 @@ footer a:hover { color:var(--caramel); }
       <p class="hero-sub" data-en="Warm, film-inspired photography capturing the quiet beauty between moments." data-zh="以胶片般的温度，捕捉瞬间之间的静谧之美。">
         Warm, film-inspired photography capturing the quiet beauty between moments.
       </p>
+      <div class="filter-tabs" style="margin-top:28px; opacity:0; animation: fadeUp .8s 1s forwards;">
+        <button class="filter-btn active" data-filter="all" onclick="filterSeries(this,'all')" data-en="All" data-zh="全部">All</button>
+        <button class="filter-btn" data-filter="portrait" onclick="filterSeries(this,'portrait')" data-en="Portrait" data-zh="人像">Portrait</button>
+        <button class="filter-btn" data-filter="event" onclick="filterSeries(this,'event')" data-en="Events" data-zh="活动">Events</button>
+        <button class="filter-btn" data-filter="travel" onclick="filterSeries(this,'travel')" data-en="Travel" data-zh="旅行">Travel</button>
+      </div>
     </div>
     <div class="hero-right"></div>
   </div>
@@ -613,13 +619,7 @@ footer a:hover { color:var(--caramel); }
   </div>
 
   <!-- Series Grid -->
-  <div style="padding:72px 72px 88px;">
-    <div class="filter-tabs">
-      <button class="filter-btn active" data-filter="all" onclick="filterSeries(this,'all')" data-en="All" data-zh="全部">All</button>
-      <button class="filter-btn" data-filter="portrait" onclick="filterSeries(this,'portrait')" data-en="Portrait" data-zh="人像">Portrait</button>
-      <button class="filter-btn" data-filter="event" onclick="filterSeries(this,'event')" data-en="Events" data-zh="活动">Events</button>
-      <button class="filter-btn" data-filter="travel" onclick="filterSeries(this,'travel')" data-en="Travel" data-zh="旅行">Travel</button>
-    </div>
+  <div style="padding:48px 72px 88px;">
     <div class="series-grid" id="seriesGrid"></div>
   </div>
 </section>
@@ -650,7 +650,7 @@ footer a:hover { color:var(--caramel); }
   <div class="booking-wrap">
     <div class="booking-info reveal">
       <span class="section-label" data-en="Book a Session" data-zh="预约拍摄">Book a Session</span>
-      <h2 class="section-title">Let's <em>Create</em> <span class="zh">预约拍摄</span></h2>
+      <h2 class="section-title">Let's Create <span class="zh">预约拍摄</span></h2>
       <p data-en="Every session begins with a conversation. Tell me about your vision and I'll take care of the rest." data-zh="每次拍摄都从一次对话开始。告诉我你的想法，其余的交给我。">
         Every session begins with a conversation. Tell me about your vision and I'll take care of the rest.
       </p>
@@ -732,7 +732,7 @@ footer a:hover { color:var(--caramel); }
   <div class="about-grid">
     <div class="about-text reveal">
       <span class="section-label" data-en="The Photographer" data-zh="关于摄影师">The Photographer</span>
-      <h2 class="section-title" style="margin-bottom:28px">About <em>Me</em> <span class="zh">关于我</span></h2>
+      <h2 class="section-title" style="margin-bottom:28px">About Me <span class="zh">关于我</span></h2>
       <p id="bioText">Based in the San Francisco Bay Area, I'm a portrait photographer with five years of experience — drawn to light, emotion, and the fleeting moments that deserve to be remembered.</p>
       <div class="about-services">
         <span class="services-label" data-en="Services" data-zh="服务内容">Services</span>
@@ -771,7 +771,7 @@ footer a:hover { color:var(--caramel); }
 <!-- Client Pickup -->
 <section id="clients">
   <span class="section-label" data-en="Client Gallery" data-zh="客片取片">Client Gallery</span>
-  <h2 class="section-title">Your <em>Photos</em> <span class="zh">客片取片</span></h2>
+  <h2 class="section-title">Your Photos <span class="zh">客片取片</span></h2>
   <div class="client-gate">
     <p data-en="Your photos are ready. Enter the access code shared by your photographer to view and download your gallery." data-zh="你的照片已准备好。请输入摄影师提供的专属取件码，查看并下载你的相册。">
       Your photos are ready. Enter the access code shared by your photographer to view and download your gallery.
@@ -1045,182 +1045,6 @@ function initFeaturedStrip() {
     track.appendChild(div);
   });
 
-  let isDragging = false, startX = 0, scrollLeft = 0;
-  wrap.addEventListener('mousedown', e => {
-    isDragging = true; startX = e.pageX - wrap.offsetLeft;
-    scrollLeft = wrap.scrollLeft; wrap.classList.add('grabbing');
-  });
-  wrap.addEventListener('mouseleave', () => { isDragging = false; wrap.classList.remove('grabbing'); });
-  wrap.addEventListener('mouseup', () => { isDragging = false; wrap.classList.remove('grabbing'); });
-  wrap.addEventListener('mousemove', e => {
-    if (!isDragging) return;
-    e.preventDefault();
-    const x = e.pageX - wrap.offsetLeft;
-    wrap.scrollLeft = scrollLeft - (x - startX) * 1.2;
-  });
-}
-
-// ── Series Grid ──
-let currentFilter = 'all';
-let lbPhotos = [];
-let lbIndex = 0;
-
-function buildSeriesGrid(filter) {
-  filter = filter || currentFilter;
-  const grid = document.getElementById('seriesGrid');
-  grid.innerHTML = '';
-  const filtered = SERIES.filter(s => filter === 'all' || s.category === filter);
-  filtered.forEach(s => {
-    const card = document.createElement('div');
-    card.className = 'series-card';
-    card.innerHTML = `
-      <img src="${s.cover}" alt="${s.name}" loading="lazy">
-      <div class="series-info">
-        <div class="series-name">${s.name}</div>
-        <div class="series-meta">${s.date} · ${s.photos.length} photos</div>
-      </div>`;
-    card.onclick = () => openSeries(s);
-    grid.appendChild(card);
-  });
-}
-
-function filterSeries(btn, filter) {
-  currentFilter = filter;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  buildSeriesGrid(filter);
-}
-
-// ── Series Detail ──
-function openSeries(s) {
-  const detail = document.getElementById('seriesDetail');
-  document.getElementById('detailTitle').textContent = s.name;
-  document.getElementById('detailDate').textContent = s.date;
-  document.getElementById('detailCount').textContent = s.photos.length + ' photos';
-  const photosEl = document.getElementById('detailPhotos');
-  photosEl.innerHTML = '';
-  lbPhotos = s.photos;
-  s.photos.forEach((src, i) => {
-    const div = document.createElement('div');
-    div.className = 'detail-photo';
-    div.innerHTML = `<img src="${src}" alt="${s.name} ${i+1}" loading="lazy">`;
-    div.onclick = () => openLb(i);
-    photosEl.appendChild(div);
-  });
-  detail.style.display = 'block';
-  document.body.style.overflow = 'hidden';
-  requestAnimationFrame(() => detail.classList.add('open', 'visible'));
-}
-
-function closeSeries() {
-  const detail = document.getElementById('seriesDetail');
-  detail.classList.remove('visible');
-  setTimeout(() => {
-    detail.classList.remove('open');
-    detail.style.display = 'none';
-    document.body.style.overflow = '';
-  }, 350);
-}
-
-// ── Lightbox ──
-function openLb(i) {
-  lbIndex = i;
-  document.getElementById('lbImg').src = lbPhotos[i];
-  document.getElementById('lightbox').classList.add('open');
-}
-function closeLb() { document.getElementById('lightbox').classList.remove('open'); }
-function changeLb(dir) {
-  lbIndex = (lbIndex + dir + lbPhotos.length) % lbPhotos.length;
-  document.getElementById('lbImg').src = lbPhotos[lbIndex];
-}
-document.getElementById('lightbox').onclick = function(e) { if(e.target===this) closeLb(); };
-document.addEventListener('keydown', e => {
-  if (e.key==='Escape') { closeLb(); closeSeries(); }
-  if (e.key==='ArrowRight') changeLb(1);
-  if (e.key==='ArrowLeft') changeLb(-1);
-});
-
-// ── Client Pickup ──
-function checkCode() {
-  const code = document.getElementById('codeInput').value.trim().toLowerCase();
-  const album = CLIENT_ALBUMS.find(a => a.password.toLowerCase() === code);
-  const err = document.getElementById('codeError');
-  const result = document.getElementById('albumResult');
-  if (!album) {
-    err.style.display = 'block';
-    result.style.display = 'none';
-    return;
-  }
-  err.style.display = 'none';
-  result.style.display = 'block';
-  result.innerHTML = `
-    <div class="album-card">
-      <img src="${album.cover}" alt="${album.name}">
-      <div class="album-info">
-        <div class="album-name">${lang === 'zh' ? album.nameZh : album.name}</div>
-        <div class="album-date">${album.date}</div>
-        <a href="${album.link}" target="_blank" class="album-link">
-          ${lang === 'en' ? 'View Gallery' : '查看相册'}
-        </a>
-      </div>
-    </div>`;
-}
-
-// ── Form ──
-function submitForm(e) {
-  e.preventDefault();
-  document.getElementById('bookingForm').style.display = 'none';
-  document.getElementById('formSuccess').style.display = 'block';
-}
-
-// ── Scroll reveal ──
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(el => { if (el.isIntersecting) el.target.classList.add('visible'); });
-}, { threshold: 0.12 });
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-// ── Nav scroll ──
-window.addEventListener('scroll', () => {
-  document.getElementById('nav').classList.toggle('scrolled', scrollY > 60);
-});
-
-// ── Cursor ──
-const cursor = document.getElementById('cursor');
-const ring = document.getElementById('cursorRing');
-document.addEventListener('mousemove', e => {
-  cursor.style.left = e.clientX + 'px';
-  cursor.style.top  = e.clientY + 'px';
-  ring.style.left   = e.clientX + 'px';
-  ring.style.top    = e.clientY + 'px';
-  cursor.classList.add('visible');
-  ring.classList.add('visible');
-});
-
-// ── Featured Strip (drag to scroll) ──
-function initFeaturedStrip() {
-  const track = document.getElementById('featuredTrack');
-  const wrap = document.getElementById('featuredWrap');
-  if (!track || !wrap) return;
-
-  // Pick first 5 photos across all series
-  const featured = [];
-  for (const s of SERIES) {
-    for (const p of s.photos) {
-      if (featured.length >= 5) break;
-      featured.push({ src: p, series: s.name });
-    }
-    if (featured.length >= 5) break;
-  }
-
-  featured.forEach((item, i) => {
-    const div = document.createElement('div');
-    div.className = 'featured-item';
-    div.innerHTML = `<img src="${item.src}" alt="${item.series}" loading="${i < 2 ? 'eager' : 'lazy'}">`;
-    div.onclick = () => { openLb(i); lbPhotos = featured.map(f => f.src); };
-    track.appendChild(div);
-  });
-
-  // Drag to scroll
   let isDragging = false, startX = 0, scrollLeft = 0;
   wrap.addEventListener('mousedown', e => {
     isDragging = true; startX = e.pageX - wrap.offsetLeft;
