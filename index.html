@@ -229,13 +229,13 @@ nav.scrolled {
 .series-scroll-track {
   display: flex;
   gap: 6px;
-  padding: 0 72px 40px;
+  padding: 0 72px 48px;
   width: max-content;
 }
 .series-scroll-card {
   position: relative;
-  width: 260px;
-  height: 360px;
+  width: 320px;
+  height: 480px;
   flex-shrink: 0;
   overflow: hidden;
   cursor: none;
@@ -671,22 +671,21 @@ footer a:hover { color:var(--caramel); }
     </div>
   </div>
 
-  <!-- Horizontal scroll -->
-  <div class="series-scroll-wrap" id="seriesScrollWrap">
-    <div class="series-scroll-track" id="seriesScrollTrack"></div>
-  </div>
-  <div class="scroll-hint">← Drag to explore →</div>
-
-  <!-- Filter + Grid -->
-  <div style="padding:32px 0 88px;">
-    <div class="filter-tabs" style="margin-bottom:24px; padding:0 72px;">
+  <!-- Filter tabs -->
+  <div style="padding:24px 72px 16px;">
+    <div class="filter-tabs">
       <button class="filter-btn active" data-filter="all" onclick="filterSeries(this,'all')" data-en="All" data-zh="全部">All</button>
       <button class="filter-btn" data-filter="portrait" onclick="filterSeries(this,'portrait')" data-en="Portrait" data-zh="人像">Portrait</button>
       <button class="filter-btn" data-filter="event" onclick="filterSeries(this,'event')" data-en="Events" data-zh="活动">Events</button>
       <button class="filter-btn" data-filter="travel" onclick="filterSeries(this,'travel')" data-en="Travel" data-zh="旅行">Travel</button>
     </div>
-    <div class="series-grid" id="seriesGrid" style="padding:0 72px;"></div>
   </div>
+
+  <!-- Horizontal scroll gallery -->
+  <div class="series-scroll-wrap" id="seriesScrollWrap">
+    <div class="series-scroll-track" id="seriesScrollTrack"></div>
+  </div>
+  <div class="scroll-hint">← Drag to explore →</div>
 </section>
 
 <!-- Series Detail Overlay -->
@@ -952,25 +951,13 @@ function initFeaturedStrip() {
 }
 
 // ── Horizontal Scroll Strip ──
+let currentScrollFilter = 'all';
+
 function initScrollStrip() {
-  const track = document.getElementById('seriesScrollTrack');
+  buildScrollStrip('all');
+
   const wrap = document.getElementById('seriesScrollWrap');
-  if (!track || !wrap) return;
-
-  SERIES.forEach(s => {
-    const card = document.createElement('div');
-    card.className = 'series-scroll-card';
-    card.innerHTML = `
-      <img src="${s.cover}" alt="${s.name}" loading="lazy">
-      <div class="series-scroll-info">
-        <div class="series-scroll-name">${s.name}</div>
-        <div class="series-scroll-meta">${s.date} · ${s.photos.length} photos</div>
-      </div>`;
-    card.onclick = () => openSeries(s);
-    track.appendChild(card);
-  });
-
-  // Drag to scroll
+  if (!wrap) return;
   let isDragging = false, startX = 0, scrollLeft = 0;
   wrap.addEventListener('mousedown', e => {
     isDragging = true; startX = e.pageX - wrap.offsetLeft;
@@ -982,6 +969,25 @@ function initScrollStrip() {
     if (!isDragging) return;
     e.preventDefault();
     wrap.scrollLeft = scrollLeft - (e.pageX - wrap.offsetLeft - startX) * 1.2;
+  });
+}
+
+function buildScrollStrip(filter) {
+  const track = document.getElementById('seriesScrollTrack');
+  if (!track) return;
+  track.innerHTML = '';
+  const filtered = filter === 'all' ? SERIES : SERIES.filter(s => s.category === filter);
+  filtered.forEach(s => {
+    const card = document.createElement('div');
+    card.className = 'series-scroll-card';
+    card.innerHTML = `
+      <img src="${s.cover}" alt="${s.name}" loading="lazy">
+      <div class="series-scroll-info">
+        <div class="series-scroll-name">${s.name}</div>
+        <div class="series-scroll-meta">${s.date} · ${s.photos.length} photos</div>
+      </div>`;
+    card.onclick = () => openSeries(s);
+    track.appendChild(card);
   });
 }
 
@@ -1013,7 +1019,7 @@ function filterSeries(btn, filter) {
   currentFilter = filter;
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  buildSeriesGrid(filter);
+  buildScrollStrip(filter);
 }
 
 // ── Series Detail ──
