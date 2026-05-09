@@ -234,8 +234,10 @@ nav.scrolled {
 }
 .series-scroll-card {
   position: relative;
-  width: 320px;
-  height: 480px;
+  width: calc(70vh * 3/4);
+  height: 70vh;
+  max-height: 600px;
+  min-height: 400px;
   flex-shrink: 0;
   overflow: hidden;
   cursor: none;
@@ -673,7 +675,7 @@ footer a:hover { color:var(--caramel); }
 
   <!-- Filter tabs -->
   <div style="padding:24px 72px 16px;">
-    <div class="filter-tabs">
+    <div class="filter-tabs" style="margin-left:0;padding-left:0;">
       <button class="filter-btn active" data-filter="all" onclick="filterSeries(this,'all')" data-en="All" data-zh="全部">All</button>
       <button class="filter-btn" data-filter="portrait" onclick="filterSeries(this,'portrait')" data-en="Portrait" data-zh="人像">Portrait</button>
       <button class="filter-btn" data-filter="event" onclick="filterSeries(this,'event')" data-en="Events" data-zh="活动">Events</button>
@@ -894,7 +896,7 @@ function initSite() {
   document.getElementById('footerName').textContent = SITE_CONFIG.tagline;
   // Hero title with camera icon
   document.getElementById('heroTitle').innerHTML =
-    SITE_CONFIG.tagline + '<span class="hero-title-zh">' + SITE_CONFIG.taglineZh + '</span>';
+    SITE_CONFIG.tagline + `<svg width="28" height="21" viewBox="0 0 44 32" fill="none" style="display:inline-block;vertical-align:middle;margin-left:10px;margin-bottom:3px"><rect x="1" y="8" width="42" height="22" rx="4" stroke="currentColor" stroke-width="1.5"/><rect x="14" y="1" width="16" height="9" rx="2" stroke="currentColor" stroke-width="1.5"/><circle cx="22" cy="19" r="8" stroke="currentColor" stroke-width="1.5"/><circle cx="22" cy="19" r="4" stroke="currentColor" stroke-width="1"/><circle cx="22" cy="19" r="1.5" fill="currentColor"/><circle cx="36" cy="11" r="2" stroke="currentColor" stroke-width="1"/></svg>` + '<span class="hero-title-zh">' + SITE_CONFIG.taglineZh + '</span>';
   // Contact
   const emailEl = document.getElementById('contactEmail');
   emailEl.href = 'mailto:' + SITE_CONFIG.email;
