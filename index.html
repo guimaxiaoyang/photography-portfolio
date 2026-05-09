@@ -214,9 +214,68 @@ nav.scrolled {
 #portfolio, #about, #booking, #contact { padding: 88px 72px; }
 
 /* ── Portfolio ── */
-#portfolio { background:var(--milk); }
+#portfolio { background:var(--cream); }
+
+/* Horizontal scroll strip */
+.series-scroll-wrap {
+  overflow-x: auto;
+  overflow-y: hidden;
+  cursor: grab;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.series-scroll-wrap::-webkit-scrollbar { display: none; }
+.series-scroll-wrap.grabbing { cursor: grabbing; }
+.series-scroll-track {
+  display: flex;
+  gap: 6px;
+  padding: 0 72px 40px;
+  width: max-content;
+}
+.series-scroll-card {
+  position: relative;
+  width: 260px;
+  height: 360px;
+  flex-shrink: 0;
+  overflow: hidden;
+  cursor: none;
+  border-radius: 2px;
+  background: var(--warm);
+}
+.series-scroll-card img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  filter: sepia(8%) saturate(0.88) brightness(0.98);
+  transition: transform .6s cubic-bezier(.25,.46,.45,.94);
+}
+.series-scroll-card:hover img { transform: scale(1.03); }
+.series-scroll-info {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 32px 16px 16px;
+  background: linear-gradient(transparent, rgba(28,20,16,0.65));
+  color: var(--cream);
+}
+.series-scroll-name {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px; font-weight: 400;
+  margin-bottom: 4px;
+}
+.series-scroll-meta {
+  font-size: 9px; letter-spacing: .08em;
+  opacity: .65; font-family: 'DM Sans', sans-serif;
+}
+.scroll-hint {
+  text-align: right;
+  padding: 0 72px 16px;
+  font-family: sans-serif;
+  font-size: 9px; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--caramel);
+}
+
 .filter-tabs {
   display:flex; gap:4px; margin-bottom:0; flex-wrap:wrap;
+  padding: 0 72px;
 }
 .filter-btn {
   font-size:10.5px; letter-spacing:.18em; text-transform:uppercase;
@@ -607,21 +666,26 @@ footer a:hover { color:var(--caramel); }
     <div class="hero-left">
       <span class="hero-tag" data-en="Portrait &amp; Event Photography" data-zh="人像 · 活动摄影">Portrait &amp; Event Photography</span>
       <h1 class="hero-title" id="heroTitle">
-        Light Tale by Yang<span class="hero-title-zh">Yang 的光影速写</span>
+        Fifth Sun | 五月<svg width="28" height="21" viewBox="0 0 44 32" fill="none" style="display:inline-block;vertical-align:middle;margin-left:10px;margin-bottom:3px"><rect x="1" y="8" width="42" height="22" rx="4" stroke="currentColor" stroke-width="1.5"/><rect x="14" y="1" width="16" height="9" rx="2" stroke="currentColor" stroke-width="1.5"/><circle cx="22" cy="19" r="8" stroke="currentColor" stroke-width="1.5"/><circle cx="22" cy="19" r="4" stroke="currentColor" stroke-width="1"/><circle cx="22" cy="19" r="1.5" fill="currentColor"/><circle cx="36" cy="11" r="2" stroke="currentColor" stroke-width="1"/></svg><span class="hero-title-zh">Photography By Yang</span>
       </h1>
-      <div class="filter-tabs" style="margin-top:16px; opacity:0; animation: fadeUp .8s 1s forwards;">
-        <button class="filter-btn active" data-filter="all" onclick="filterSeries(this,'all')" data-en="All" data-zh="全部">All</button>
-        <button class="filter-btn" data-filter="portrait" onclick="filterSeries(this,'portrait')" data-en="Portrait" data-zh="人像">Portrait</button>
-        <button class="filter-btn" data-filter="event" onclick="filterSeries(this,'event')" data-en="Events" data-zh="活动">Events</button>
-        <button class="filter-btn" data-filter="travel" onclick="filterSeries(this,'travel')" data-en="Travel" data-zh="旅行">Travel</button>
-      </div>
     </div>
-
   </div>
 
-  <!-- Series Grid -->
-  <div style="padding:24px 72px 88px;">
-    <div class="series-grid" id="seriesGrid"></div>
+  <!-- Horizontal scroll -->
+  <div class="series-scroll-wrap" id="seriesScrollWrap">
+    <div class="series-scroll-track" id="seriesScrollTrack"></div>
+  </div>
+  <div class="scroll-hint">← Drag to explore →</div>
+
+  <!-- Filter + Grid -->
+  <div style="padding:32px 0 88px;">
+    <div class="filter-tabs" style="margin-bottom:24px; padding:0 72px;">
+      <button class="filter-btn active" data-filter="all" onclick="filterSeries(this,'all')" data-en="All" data-zh="全部">All</button>
+      <button class="filter-btn" data-filter="portrait" onclick="filterSeries(this,'portrait')" data-en="Portrait" data-zh="人像">Portrait</button>
+      <button class="filter-btn" data-filter="event" onclick="filterSeries(this,'event')" data-en="Events" data-zh="活动">Events</button>
+      <button class="filter-btn" data-filter="travel" onclick="filterSeries(this,'travel')" data-en="Travel" data-zh="旅行">Travel</button>
+    </div>
+    <div class="series-grid" id="seriesGrid" style="padding:0 72px;"></div>
   </div>
 </section>
 
@@ -887,6 +951,40 @@ function initFeaturedStrip() {
   });
 }
 
+// ── Horizontal Scroll Strip ──
+function initScrollStrip() {
+  const track = document.getElementById('seriesScrollTrack');
+  const wrap = document.getElementById('seriesScrollWrap');
+  if (!track || !wrap) return;
+
+  SERIES.forEach(s => {
+    const card = document.createElement('div');
+    card.className = 'series-scroll-card';
+    card.innerHTML = `
+      <img src="${s.cover}" alt="${s.name}" loading="lazy">
+      <div class="series-scroll-info">
+        <div class="series-scroll-name">${s.name}</div>
+        <div class="series-scroll-meta">${s.date} · ${s.photos.length} photos</div>
+      </div>`;
+    card.onclick = () => openSeries(s);
+    track.appendChild(card);
+  });
+
+  // Drag to scroll
+  let isDragging = false, startX = 0, scrollLeft = 0;
+  wrap.addEventListener('mousedown', e => {
+    isDragging = true; startX = e.pageX - wrap.offsetLeft;
+    scrollLeft = wrap.scrollLeft; wrap.classList.add('grabbing');
+  });
+  wrap.addEventListener('mouseleave', () => { isDragging = false; wrap.classList.remove('grabbing'); });
+  wrap.addEventListener('mouseup', () => { isDragging = false; wrap.classList.remove('grabbing'); });
+  wrap.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    e.preventDefault();
+    wrap.scrollLeft = scrollLeft - (e.pageX - wrap.offsetLeft - startX) * 1.2;
+  });
+}
+
 // ── Series Grid ──
 let currentFilter = 'all';
 let lbPhotos = [];
@@ -1138,7 +1236,7 @@ function initFeaturedStrip() {
 }
 
 // ── Start ──
-initFeaturedStrip();
+initScrollStrip();
 initSite();
 </script>
 </body>

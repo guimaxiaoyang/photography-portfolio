@@ -3,8 +3,8 @@
 
 const SITE_CONFIG = {
   "name": "Yang",
-  "tagline": "Light Tale by Yang",
-  "taglineZh": "Yang 的光影速写",
+  "tagline": "Fifth Sun | 五月",
+  "taglineZh": "Photography By Yang",
   "email": "yang.sherry.wang@gmail.com",
   "instagram": "yang_lighttale",
   "bioEn": "Based in the San Francisco Bay Area, I'm a portrait photographer with five years of experience.",
