@@ -96,7 +96,7 @@ nav.scrolled {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 80px 72px 0;
+  padding: 64px 72px 0;
 }
 .hero-right {
   position: relative;
@@ -109,13 +109,13 @@ nav.scrolled {
   filter: sepia(8%) saturate(0.88) brightness(0.98);
 }
 .hero-tag {
-  font-size:10px; letter-spacing:.28em; text-transform:uppercase;
-  color:var(--caramel); margin-bottom:20px;
+  font-size:9px; letter-spacing:.24em; text-transform:uppercase;
+  color:var(--caramel); margin-bottom:12px;
   opacity:0; animation: fadeUp .8s .4s forwards;
 }
 .hero-title {
   font-family:'Libre Baskerville', serif;
-  font-size: clamp(28px,3vw,42px);
+  font-size: clamp(20px,2vw,28px);
   font-weight:400; line-height:1.15;
   color:var(--espresso);
   opacity:0; animation: fadeUp .8s .6s forwards;
@@ -125,13 +125,13 @@ nav.scrolled {
   font-family:'Noto Sans SC', sans-serif;
   font-style:normal !important;
   font-weight:300;
-  font-size: clamp(16px,1.6vw,22px);
+  font-size: clamp(13px,1.2vw,16px);
   color:var(--muted); letter-spacing:.08em; display:block;
   margin-top:8px;
 }
 .hero-sub {
-  font-size:13px; line-height:1.9; color:var(--muted);
-  max-width:340px; margin-top:24px;
+  font-size:12px; line-height:1.8; color:var(--muted);
+  max-width:340px; margin-top:14px;
   opacity:0; animation: fadeUp .8s .8s forwards;
 }
 
@@ -600,7 +600,7 @@ footer a:hover { color:var(--caramel); }
       <p class="hero-sub" data-en="Warm, film-inspired photography capturing the quiet beauty between moments." data-zh="以胶片般的温度，捕捉瞬间之间的静谧之美。">
         Warm, film-inspired photography capturing the quiet beauty between moments.
       </p>
-      <div class="filter-tabs" style="margin-top:28px; opacity:0; animation: fadeUp .8s 1s forwards;">
+      <div class="filter-tabs" style="margin-top:16px; opacity:0; animation: fadeUp .8s 1s forwards;">
         <button class="filter-btn active" data-filter="all" onclick="filterSeries(this,'all')" data-en="All" data-zh="全部">All</button>
         <button class="filter-btn" data-filter="portrait" onclick="filterSeries(this,'portrait')" data-en="Portrait" data-zh="人像">Portrait</button>
         <button class="filter-btn" data-filter="event" onclick="filterSeries(this,'event')" data-en="Events" data-zh="活动">Events</button>
