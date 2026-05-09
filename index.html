@@ -302,34 +302,16 @@ nav.scrolled {
 }
 .detail-photos {
   padding:40px 52px;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-}
-.detail-row-portrait {
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:8px;
-}
-.detail-row-landscape {
-  display:grid;
-  grid-template-columns:1fr;
-  gap:8px;
-}
-.detail-row-landscape-2 {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
 }
 .detail-photo {
   overflow:hidden; cursor:none;
 }
 .detail-photo img {
-  width:100%; display:block;
-  object-fit:cover;
+  display:block;
   filter: sepia(8%) saturate(0.88) brightness(0.98);
   transition:transform .5s ease;
 }
+.detail-photo:hover img { transform:scale(1.02); }
 .detail-photo:hover img { transform:scale(1.02); }
 
 /* Lightbox */
@@ -358,7 +340,7 @@ nav.scrolled {
 
 @media (max-width:900px) {
   .series-grid { grid-template-columns:repeat(2,1fr); }
-  .detail-photos { columns:2; padding:24px; column-gap:6px; }
+  .detail-photos { grid-template-columns:repeat(2,1fr); padding:24px; gap:6px; }
   .detail-header { padding:16px 24px; }
 }
 @media (max-width:540px) {
@@ -949,77 +931,87 @@ function openSeries(s) {
   document.getElementById('detailDate').textContent = s.date;
   document.getElementById('detailCount').textContent = s.photos.length + ' photos';
   const photosEl = document.getElementById('detailPhotos');
-  photosEl.innerHTML = '';
+  photosEl.innerHTML = '<div style="padding:40px;text-align:center;color:var(--muted);font-size:12px;letter-spacing:.1em">Loading...</div>';
   lbPhotos = s.photos;
-
-  // Load all images, detect orientation, then build rows
-  let loaded = 0;
-  const orientations = new Array(s.photos.length).fill(null);
-
-  function buildRows() {
-    photosEl.innerHTML = '';
-    // Group into portrait and landscape
-    let portraitBatch = [];
-    s.photos.forEach((src, i) => {
-      const isLandscape = orientations[i] === 'landscape';
-      if (isLandscape) {
-        // Flush portrait batch first
-        if (portraitBatch.length > 0) {
-          flushPortrait(portraitBatch, photosEl, s.name);
-          portraitBatch = [];
-        }
-        // Add landscape as full row
-        const row = document.createElement('div');
-        row.className = 'detail-row-landscape';
-        const div = document.createElement('div');
-        div.className = 'detail-photo';
-        div.innerHTML = `<img src="${src}" alt="${s.name} ${i+1}" loading="lazy" style="max-height:60vh;object-fit:contain;background:#f0ebe3;">`;
-        div.onclick = () => openLb(i);
-        row.appendChild(div);
-        photosEl.appendChild(row);
-      } else {
-        portraitBatch.push({src, i});
-        if (portraitBatch.length === 3) {
-          flushPortrait(portraitBatch, photosEl, s.name);
-          portraitBatch = [];
-        }
-      }
-    });
-    if (portraitBatch.length > 0) flushPortrait(portraitBatch, photosEl, s.name);
-  }
-
-  function flushPortrait(batch, container, name) {
-    const row = document.createElement('div');
-    row.className = 'detail-row-portrait';
-    batch.forEach(({src, i}) => {
-      const div = document.createElement('div');
-      div.className = 'detail-photo';
-      div.style.aspectRatio = '3/4';
-      div.innerHTML = `<img src="${src}" alt="${name} ${i+1}" loading="lazy" style="width:100%;height:100%;object-fit:cover;">`;
-      div.onclick = () => openLb(i);
-      row.appendChild(div);
-    });
-    container.appendChild(row);
-  }
-
-  // Detect orientations
-  s.photos.forEach((src, i) => {
-    const img = new Image();
-    img.onload = () => {
-      orientations[i] = img.naturalWidth > img.naturalHeight ? 'landscape' : 'portrait';
-      loaded++;
-      if (loaded === s.photos.length) buildRows();
-    };
-    img.onerror = () => {
-      orientations[i] = 'portrait';
-      loaded++;
-      if (loaded === s.photos.length) buildRows();
-    };
-    img.src = src;
-  });
   detail.style.display = 'block';
   document.body.style.overflow = 'hidden';
   requestAnimationFrame(() => detail.classList.add('open', 'visible'));
+
+  // Detect all orientations first, then render
+  const orientations = [];
+  const ratios = [];
+  let done = 0;
+  s.photos.forEach((src, i) => {
+    const img = new Image();
+    img.onload = () => {
+      const r = img.naturalWidth / img.naturalHeight;
+      ratios[i] = r;
+      orientations[i] = r >= 1 ? 'landscape' : 'portrait';
+      if (++done === s.photos.length) renderDetailPhotos(s, photosEl, orientations, ratios);
+    };
+    img.onerror = () => {
+      ratios[i] = 0.75;
+      orientations[i] = 'portrait';
+      if (++done === s.photos.length) renderDetailPhotos(s, photosEl, orientations, ratios);
+    };
+    img.src = src;
+  });
+}
+
+function renderDetailPhotos(s, container, orientations, ratios) {
+  container.innerHTML = '';
+  let i = 0;
+  while (i < s.photos.length) {
+    if (orientations[i] === 'landscape') {
+      const ratio = ratios[i];
+      // If ratio < 1.6 (close to square), pair with next landscape if available
+      const canPair = ratio < 1.6 && i + 1 < s.photos.length && orientations[i + 1] === 'landscape';
+      if (canPair) {
+        const row = document.createElement('div');
+        row.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;';
+        [0, 1].forEach(offset => {
+          const idx = i + offset;
+          const div = document.createElement('div');
+          div.className = 'detail-photo';
+          div.style.aspectRatio = '3/2';
+          div.innerHTML = `<img src="${s.photos[idx]}" alt="${s.name} ${idx+1}" loading="lazy" style="width:100%;height:100%;object-fit:cover;">`;
+          div.onclick = () => openLb(idx);
+          row.appendChild(div);
+        });
+        container.appendChild(row);
+        i += 2;
+      } else {
+        // Wide landscape, full row
+        const row = document.createElement('div');
+        row.style.cssText = 'margin-bottom:8px;';
+        const div = document.createElement('div');
+        div.className = 'detail-photo';
+        div.style.cssText = `aspect-ratio:${ratio > 1.8 ? '16/9' : '3/2'};`;
+        div.innerHTML = `<img src="${s.photos[i]}" alt="${s.name} ${i+1}" loading="lazy" style="width:100%;height:100%;object-fit:cover;">`;
+        div.onclick = () => openLb(i);
+        row.appendChild(div);
+        container.appendChild(row);
+        i += 1;
+      }
+    } else {
+      const batch = [];
+      while (i < s.photos.length && orientations[i] === 'portrait' && batch.length < 3) {
+        batch.push(i);
+        i++;
+      }
+      const row = document.createElement('div');
+      row.style.cssText = `display:grid;grid-template-columns:repeat(${batch.length},1fr);gap:8px;margin-bottom:8px;`;
+      batch.forEach(idx => {
+        const div = document.createElement('div');
+        div.className = 'detail-photo';
+        div.style.aspectRatio = '3/4';
+        div.innerHTML = `<img src="${s.photos[idx]}" alt="${s.name} ${idx+1}" loading="lazy" style="width:100%;height:100%;object-fit:cover;">`;
+        div.onclick = () => openLb(idx);
+        row.appendChild(div);
+      });
+      container.appendChild(row);
+    }
+  }
 }
 
 function closeSeries() {
