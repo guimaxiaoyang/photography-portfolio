@@ -43,7 +43,7 @@ const SERIES = [
       "https://res.cloudinary.com/dpadfus0q/image/upload/v1778291277/portfolio/e4qis7wxwuqcjuysgwh2.jpg",
       "https://res.cloudinary.com/dpadfus0q/image/upload/v1778291282/portfolio/qywpzrddqhgic7m0uppz.jpg",
       "https://res.cloudinary.com/dpadfus0q/image/upload/v1778291279/portfolio/qnjthnzn08okfixz1395.jpg",
-      "https://res.cloudinary.com/dpadfus0q/image/upload/v1778291283/portfolio/ju9y588g7jp4gzoj4vvt.jpg"
+      { "src": "https://res.cloudinary.com/dpadfus0q/image/upload/v1778291283/portfolio/ju9y588g7jp4gzoj4vvt.jpg", "landscape": true }
     ]
   },
   {
