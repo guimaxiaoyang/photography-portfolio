@@ -37,66 +37,64 @@ With a film-inspired warmth and an unhurried eye, I capture what words often can
 };
 
 // ============================================================
-//  作品集照片 — 在这里添加你的照片
-//  src: 图片路径（放在 images/ 文件夹里）
-//  alt / altZh: 图片描述
-//  category: portrait（人像）| event（活动）| travel（旅行）| other（其他）
+//  作品集系列 — 每次拍摄是一个系列
+//
+//  id:       唯一标识，英文+数字，不含空格（URL用）
+//  name:     系列名称（你自己取，显示在网站上）
+//  category: portrait | event | travel
+//  date:     拍摄日期
+//  cover:    封面图路径（放在 images/ 文件夹里）
+//  photos:   这个系列的所有照片路径
+//
+//  ➕ 新增系列：复制一个 {} 块，填写信息，放进数组即可
 // ============================================================
 
-const PHOTOS = [
+const SERIES = [
   {
-    src: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=80",
-    alt: "Golden hour portrait",
-    altZh: "黄金时刻人像",
+    id: "portrait-sarah-2024",
+    name: "Sarah · Golden Hour",
     category: "portrait",
+    date: "Oct 2024",
+    cover: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=80",
+    photos: [
+      "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=1200&q=85",
+      "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=1200&q=85",
+      "https://images.unsplash.com/photo-1502791451862-7bd8c1df43a7?w=1200&q=85",
+      "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=1200&q=85",
+    ],
   },
   {
-    src: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=800&q=80",
-    alt: "Natural light portrait",
-    altZh: "自然光人像",
+    id: "portrait-amy-2024",
+    name: "Amy · Studio",
     category: "portrait",
+    date: "Dec 2024",
+    cover: "https://images.unsplash.com/photo-1537633552985-df8429e8048b?w=800&q=80",
+    photos: [
+      "https://images.unsplash.com/photo-1537633552985-df8429e8048b?w=1200&q=85",
+      "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=1200&q=85",
+    ],
   },
   {
-    src: "https://images.unsplash.com/photo-1537633552985-df8429e8048b?w=800&q=80",
-    alt: "Outdoor couple portrait",
-    altZh: "户外人像",
-    category: "portrait",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=80",
-    alt: "Wedding moment",
-    altZh: "婚礼瞬间",
+    id: "event-gala-2024",
+    name: "Annual Gala 2024",
     category: "event",
+    date: "Nov 2024",
+    cover: "https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=80",
+    photos: [
+      "https://images.unsplash.com/photo-1519741497674-611481863552?w=1200&q=85",
+      "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=1200&q=85",
+      "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=1200&q=85",
+    ],
   },
   {
-    src: "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=800&q=80",
-    alt: "Event atmosphere",
-    altZh: "活动现场",
-    category: "event",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1502791451862-7bd8c1df43a7?w=800&q=80",
-    alt: "Warm afternoon light",
-    altZh: "午后暖光",
-    category: "portrait",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1470116945706-e6bf5d5a53ca?w=800&q=80",
-    alt: "Golden fields",
-    altZh: "金色田野",
+    id: "travel-tokyo-2024",
+    name: "Tokyo · Spring",
     category: "travel",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=800&q=80",
-    alt: "Candid moment",
-    altZh: "抓拍瞬间",
-    category: "portrait",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800&q=80",
-    alt: "Celebration",
-    altZh: "庆典",
-    category: "event",
+    date: "Apr 2024",
+    cover: "https://images.unsplash.com/photo-1470116945706-e6bf5d5a53ca?w=800&q=80",
+    photos: [
+      "https://images.unsplash.com/photo-1470116945706-e6bf5d5a53ca?w=1200&q=85",
+    ],
   },
 ];
 
