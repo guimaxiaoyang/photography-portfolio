@@ -128,7 +128,7 @@ nav.scrolled {
   font-weight:300;
   font-size:0.72em;
   color:var(--muted); letter-spacing:.02em;
-  display:inline; margin-left:8px;
+  display:block; margin-top:6px; font-size:13px; letter-spacing:.08em;
 }
 .hero-sub {
   font-size:12px; line-height:1.8; color:var(--muted);
@@ -595,7 +595,7 @@ footer a:hover { color:var(--caramel); }
 
 <!-- Nav -->
 <nav id="nav">
-  <a href="#" class="nav-logo" id="navLogo">YOUR NAME</a>
+  <div></div>
   <ul class="nav-links">
     <li><a href="#portfolio" data-en="Work" data-zh="作品">Work</a></li>
     <li><a href="#booking" data-en="Booking" data-zh="预约">Booking</a></li>
@@ -613,7 +613,7 @@ footer a:hover { color:var(--caramel); }
     <div class="hero-left">
       <span class="hero-tag" data-en="Portrait &amp; Event Photography" data-zh="人像 · 活动摄影">Portrait &amp; Event Photography</span>
       <h1 class="hero-title" id="heroTitle">
-        Light &amp; Moment<span class="hero-title-zh">光与瞬间</span>
+        Light Tale by Yang<span class="hero-title-zh">Yang 的光影速写</span>
       </h1>
       <div class="filter-tabs" style="margin-top:16px; opacity:0; animation: fadeUp .8s 1s forwards;">
         <button class="filter-btn active" data-filter="all" onclick="filterSeries(this,'all')" data-en="All" data-zh="全部">All</button>
@@ -833,9 +833,9 @@ function applyLang() {
 function initSite() {
   // Name
   document.title = SITE_CONFIG.name + ' Photography';
-  document.getElementById('navLogo').textContent = SITE_CONFIG.name.toUpperCase();
-  document.getElementById('footerName').textContent = SITE_CONFIG.name + ' Photography';
-  // Hero title — EN line + ZH line with proper font
+  
+  document.getElementById('footerName').textContent = SITE_CONFIG.tagline;
+  // Hero title with camera icon
   document.getElementById('heroTitle').innerHTML =
     SITE_CONFIG.tagline + '<span class="hero-title-zh">' + SITE_CONFIG.taglineZh + '</span>';
   // Contact
