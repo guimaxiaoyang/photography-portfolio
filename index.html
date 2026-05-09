@@ -142,84 +142,6 @@ nav.scrolled {
   .hero-right { min-height:55vw; }
 }
 
-/* ── Featured Strip ── */
-.featured-strip {
-  background: var(--cream);
-  padding: 0;
-  overflow: hidden;
-  position: relative;
-}
-.featured-track-wrap {
-  overflow-x: auto;
-  overflow-y: hidden;
-  cursor: grab;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-}
-.featured-track-wrap::-webkit-scrollbar { display:none; }
-.featured-track-wrap.grabbing { cursor: grabbing; }
-.featured-track {
-  display: flex;
-  gap: 3px;
-  padding: 0 72px 48px;
-  width: max-content;
-}
-.featured-item {
-  height: 44vh;
-  min-height: 260px;
-  max-height: 420px;
-  overflow: hidden;
-  flex-shrink: 0;
-  position: relative;
-  cursor: none;
-}
-.featured-item img {
-  height: 100%;
-  width: auto;
-  display: block;
-  object-fit: cover;
-  filter: sepia(8%) saturate(0.88) brightness(0.98);
-  transition: transform .6s cubic-bezier(.25,.46,.45,.94), filter .4s;
-  pointer-events: none;
-}
-.featured-item:hover img {
-  transform: scale(1.02);
-  filter: sepia(4%) saturate(0.95) brightness(1.02);
-}
-.featured-hint {
-  position: absolute;
-  bottom: 48px; right: 72px;
-  font-size: 9px; letter-spacing:.22em; text-transform:uppercase;
-  color: var(--muted); display:flex; align-items:center; gap:10px;
-}
-.featured-hint::before {
-  content:''; width:32px; height:1px; background:var(--caramel);
-}
-
-@media (max-width:900px) {
-  .hero { padding:0 28px 64px; }
-  .featured-track { padding:32px 28px; }
-  .featured-item { height:55vw; min-height:260px; }
-  .featured-hint { bottom:32px; right:28px; }
-}
-
-.section-label {
-  font-size:10px; letter-spacing:.28em; text-transform:uppercase;
-  color:var(--muted); margin-bottom:12px; display:block;
-  font-family:'DM Sans', sans-serif; font-weight:400;
-}
-.section-title {
-  font-family:'Libre Baskerville', serif;
-  font-size:clamp(28px,3vw,42px); font-weight:400;
-  color:var(--espresso); line-height:1.2; margin-bottom:52px;
-}
-.section-title em { font-style:normal; }
-.section-title .zh {
-  font-family:'Noto Sans SC', sans-serif;
-  font-size:0.72em; font-weight:300;
-  color:var(--muted); letter-spacing:.02em;
-}
-
 /* ── Section padding ── */
 #portfolio, #about, #booking, #contact { padding: 88px 72px; }
 
@@ -628,16 +550,8 @@ footer a:hover { color:var(--caramel); }
     <div class="hero-right"></div>
   </div>
 
-  <!-- Featured Strip -->
-  <div class="featured-strip">
-    <div class="featured-track-wrap" id="featuredWrap">
-      <div class="featured-track" id="featuredTrack"></div>
-    </div>
-    <div class="featured-hint" data-en="Drag to explore" data-zh="拖动浏览">Drag to explore</div>
-  </div>
-
   <!-- Series Grid -->
-  <div style="padding:72px 72px 88px;">
+  <div style="padding:0 72px 88px;">
     <div class="filter-tabs">
       <button class="filter-btn active" data-filter="all" onclick="filterSeries(this,'all')" data-en="All" data-zh="全部">All</button>
       <button class="filter-btn" data-filter="portrait" onclick="filterSeries(this,'portrait')" data-en="Portrait" data-zh="人像">Portrait</button>
@@ -1008,6 +922,142 @@ document.addEventListener('mousemove', e => {
   ring.classList.add('visible');
 });
 
+// ── Series Grid ──
+let currentFilter = 'all';
+let lbPhotos = [];
+let lbIndex = 0;
+
+function buildSeriesGrid(filter) {
+  filter = filter || currentFilter;
+  const grid = document.getElementById('seriesGrid');
+  grid.innerHTML = '';
+  const filtered = SERIES.filter(s => filter === 'all' || s.category === filter);
+  filtered.forEach(s => {
+    const card = document.createElement('div');
+    card.className = 'series-card';
+    card.innerHTML = `
+      <img src="${s.cover}" alt="${s.name}" loading="lazy">
+      <div class="series-info">
+        <div class="series-name">${s.name}</div>
+        <div class="series-meta">${s.date} · ${s.photos.length} photos</div>
+      </div>`;
+    card.onclick = () => openSeries(s);
+    grid.appendChild(card);
+  });
+}
+
+function filterSeries(btn, filter) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  buildSeriesGrid(filter);
+}
+
+// ── Series Detail ──
+function openSeries(s) {
+  const detail = document.getElementById('seriesDetail');
+  document.getElementById('detailTitle').textContent = s.name;
+  document.getElementById('detailDate').textContent = s.date;
+  document.getElementById('detailCount').textContent = s.photos.length + ' photos';
+  const photosEl = document.getElementById('detailPhotos');
+  photosEl.innerHTML = '';
+  lbPhotos = s.photos;
+  s.photos.forEach((src, i) => {
+    const div = document.createElement('div');
+    div.className = 'detail-photo';
+    div.innerHTML = `<img src="${src}" alt="${s.name} ${i+1}" loading="lazy">`;
+    div.onclick = () => openLb(i);
+    photosEl.appendChild(div);
+  });
+  detail.style.display = 'block';
+  document.body.style.overflow = 'hidden';
+  requestAnimationFrame(() => detail.classList.add('open', 'visible'));
+}
+
+function closeSeries() {
+  const detail = document.getElementById('seriesDetail');
+  detail.classList.remove('visible');
+  setTimeout(() => {
+    detail.classList.remove('open');
+    detail.style.display = 'none';
+    document.body.style.overflow = '';
+  }, 350);
+}
+
+// ── Lightbox ──
+function openLb(i) {
+  lbIndex = i;
+  document.getElementById('lbImg').src = lbPhotos[i];
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLb() { document.getElementById('lightbox').classList.remove('open'); }
+function changeLb(dir) {
+  lbIndex = (lbIndex + dir + lbPhotos.length) % lbPhotos.length;
+  document.getElementById('lbImg').src = lbPhotos[lbIndex];
+}
+document.getElementById('lightbox').onclick = function(e) { if(e.target===this) closeLb(); };
+document.addEventListener('keydown', e => {
+  if (e.key==='Escape') { closeLb(); closeSeries(); }
+  if (e.key==='ArrowRight') changeLb(1);
+  if (e.key==='ArrowLeft') changeLb(-1);
+});
+
+// ── Client Pickup ──
+function checkCode() {
+  const code = document.getElementById('codeInput').value.trim().toLowerCase();
+  const album = CLIENT_ALBUMS.find(a => a.password.toLowerCase() === code);
+  const err = document.getElementById('codeError');
+  const result = document.getElementById('albumResult');
+  if (!album) {
+    err.style.display = 'block';
+    result.style.display = 'none';
+    return;
+  }
+  err.style.display = 'none';
+  result.style.display = 'block';
+  result.innerHTML = `
+    <div class="album-card">
+      <img src="${album.cover}" alt="${album.name}">
+      <div class="album-info">
+        <div class="album-name">${lang === 'zh' ? album.nameZh : album.name}</div>
+        <div class="album-date">${album.date}</div>
+        <a href="${album.link}" target="_blank" class="album-link">
+          ${lang === 'en' ? 'View Gallery' : '查看相册'}
+        </a>
+      </div>
+    </div>`;
+}
+
+// ── Form ──
+function submitForm(e) {
+  e.preventDefault();
+  document.getElementById('bookingForm').style.display = 'none';
+  document.getElementById('formSuccess').style.display = 'block';
+}
+
+// ── Scroll reveal ──
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(el => { if (el.isIntersecting) el.target.classList.add('visible'); });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── Nav scroll ──
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', scrollY > 60);
+});
+
+// ── Cursor ──
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top  = e.clientY + 'px';
+  ring.style.left   = e.clientX + 'px';
+  ring.style.top    = e.clientY + 'px';
+  cursor.classList.add('visible');
+  ring.classList.add('visible');
+});
+
 // ── Featured Strip (drag to scroll) ──
 function initFeaturedStrip() {
   const track = document.getElementById('featuredTrack');
@@ -1049,7 +1099,6 @@ function initFeaturedStrip() {
 }
 
 // ── Start ──
-initFeaturedStrip();
 initSite();
 </script>
 </body>
