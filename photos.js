@@ -13,14 +13,10 @@ const SITE_CONFIG = {
   taglineZh: "光与瞬间",
 
   // About 页简介（英文）
-  bioEn: `I'm a portrait and event photographer based in the San Francisco Bay Area. 
-I believe every frame is a quiet conversation — between light, subject, and time. 
-With a film-inspired warmth and an unhurried eye, I capture what words often can't.`,
+  bioEn: `Based in the San Francisco Bay Area, I'm a portrait photographer with five years of experience — drawn to light, emotion, and the fleeting moments that deserve to be remembered.`,
 
   // About 页简介（中文）
-  bioZh: `我是一位人像与活动摄影师，工作于旧金山湾区。
-我相信每一帧都是一场安静的对话——光、人与时间之间的。
-以胶片般的温度和从容的视角，记录语言难以表达的瞬间。`,
+  bioZh: `旧金山湾区人像摄影师，五年拍摄经验。着迷于光线与情感，以及那些值得被珍藏的瞬间。`,
 
   // 联系邮箱
   email: "hello@yourname.com",

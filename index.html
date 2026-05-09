@@ -347,22 +347,15 @@ nav.scrolled {
 }
 
 /* ── About ── */
-#about { background:var(--cream); }
+#about { background:var(--cream); padding:64px 72px; }
 .about-grid {
-  display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center;
-}
-.about-img {
-  aspect-ratio:3/4; overflow:hidden;
-}
-.about-img img {
-  width:100%; height:100%; object-fit:cover;
-  filter: sepia(14%) saturate(0.82);
+  display:grid; grid-template-columns:1fr; max-width:720px;
 }
 .about-text p {
-  font-size:15px; line-height:2; color:var(--text);
-  margin-bottom:24px;
+  font-size:14px; line-height:1.9; color:var(--text);
+  margin-bottom:20px;
 }
-.about-services { margin-top:44px; }
+.about-services { margin-top:32px; }
 .services-label {
   font-size:10px; letter-spacing:.24em; text-transform:uppercase;
   color:var(--caramel); margin-bottom:20px; display:block;
@@ -380,6 +373,18 @@ nav.scrolled {
 }
 
 .about-gear { margin-top:36px; }
+.about-contact {
+  margin-top:36px;
+}
+.about-contact-row {
+  display:flex; gap:32px; flex-wrap:wrap; align-items:center;
+  padding-top:4px;
+}
+.about-contact-item {
+  font-size:12.5px; color:var(--muted); text-decoration:none;
+  letter-spacing:.02em; transition:color .2s;
+}
+.about-contact-item:hover { color:var(--espresso); }
 .gear-body { display:flex; flex-direction:column; }
 .gear-row {
   display:grid; grid-template-columns:64px 1fr; gap:20px;
@@ -591,8 +596,8 @@ footer a:hover { color:var(--caramel); }
   <a href="#" class="nav-logo" id="navLogo">YOUR NAME</a>
   <ul class="nav-links">
     <li><a href="#portfolio" data-en="Work" data-zh="作品">Work</a></li>
-    <li><a href="#about" data-en="About" data-zh="关于">About</a></li>
     <li><a href="#booking" data-en="Booking" data-zh="预约">Booking</a></li>
+    <li><a href="#about" data-en="About" data-zh="关于">About</a></li>
     <li><a href="#clients" data-en="Client Gallery" data-zh="客片取片">Client Gallery</a></li>
   </ul>
   <div class="nav-right">
@@ -654,42 +659,6 @@ footer a:hover { color:var(--caramel); }
   <button class="lb-next" onclick="changeLb(1)">›</button>
 </div>
 
-<!-- About -->
-<section id="about">
-  <div class="about-grid">
-    <div class="about-img reveal">
-      <img src="https://images.unsplash.com/photo-1502791451862-7bd8c1df43a7?w=800&q=80" alt="Photographer">
-    </div>
-    <div class="about-text reveal">
-      <span class="section-label" data-en="The Photographer" data-zh="关于摄影师">The Photographer</span>
-      <h2 class="section-title" style="margin-bottom:28px">About <em>Me</em> <span class="zh">关于我</span></h2>
-      <p id="bioText"></p>
-      <div class="about-services">
-        <span class="services-label" data-en="Services" data-zh="服务内容">Services</span>
-        <ul class="service-list">
-          <li data-en="Portrait Sessions" data-zh="人像拍摄">Portrait Sessions</li>
-          <li data-en="Wedding &amp; Engagement" data-zh="婚礼 &amp; 订婚">Wedding &amp; Engagement</li>
-          <li data-en="Family Portraits" data-zh="家庭照">Family Portraits</li>
-          <li data-en="Brand Photography" data-zh="品牌摄影">Brand Photography</li>
-        </ul>
-      </div>
-      <div class="about-gear">
-        <span class="services-label" data-en="Gear" data-zh="器材">Gear</span>
-        <div class="gear-body">
-          <div class="gear-row">
-            <span class="gear-cat" data-en="Body" data-zh="机身">Body</span>
-            <span class="gear-items">Sony A7R V</span>
-          </div>
-          <div class="gear-row">
-            <span class="gear-cat" data-en="Lenses" data-zh="镜头">Lenses</span>
-            <span class="gear-items">Sony 24mm GM · Sony 24–70mm GM II · Sony 70–200mm GM II · Zeiss Batis 40mm · Zeiss Batis 85mm</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- Booking -->
 <section id="booking">
   <div class="booking-wrap">
@@ -741,7 +710,6 @@ footer a:hover { color:var(--caramel); }
             <option value="" data-en="Select type..." data-zh="请选择...">Select type...</option>
             <option data-en="Portrait" data-zh="人像拍摄">Portrait</option>
             <option data-en="Wedding / Engagement" data-zh="婚礼 / 订婚">Wedding / Engagement</option>
-            <option data-en="Corporate Event" data-zh="企业活动">Corporate Event</option>
             <option data-en="Family" data-zh="家庭照">Family</option>
             <option data-en="Other" data-zh="其他">Other</option>
           </select>
@@ -773,25 +741,43 @@ footer a:hover { color:var(--caramel); }
   </div>
 </section>
 
-<!-- Contact -->
-<section id="contact">
-  <span class="section-label" data-en="Get in Touch" data-zh="联系方式">Get in Touch</span>
-  <h2 class="section-title">Say <em>Hello</em> <span class="zh">联系我</span></h2>
-  <div class="contact-grid">
-    <div class="contact-card">
-      <div class="contact-card-icon">✉</div>
-      <span class="contact-card-label" data-en="Email" data-zh="邮箱">Email</span>
-      <a href="mailto:hello@yourname.com" class="contact-card-value" id="contactEmail">hello@yourname.com</a>
-    </div>
-    <div class="contact-card">
-      <div class="contact-card-icon">◎</div>
-      <span class="contact-card-label" data-en="Instagram" data-zh="Instagram">Instagram</span>
-      <a href="#" class="contact-card-value" id="contactIG">@yourname</a>
-    </div>
-    <div class="contact-card">
-      <div class="contact-card-icon">◈</div>
-      <span class="contact-card-label" data-en="Based In" data-zh="所在地">Based In</span>
-      <span class="contact-card-value" data-en="San Francisco Bay Area" data-zh="旧金山湾区">San Francisco Bay Area</span>
+<!-- About -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <span class="section-label" data-en="The Photographer" data-zh="关于摄影师">The Photographer</span>
+      <h2 class="section-title" style="margin-bottom:28px">About <em>Me</em> <span class="zh">关于我</span></h2>
+      <p id="bioText"></p>
+      <div class="about-services">
+        <span class="services-label" data-en="Services" data-zh="服务内容">Services</span>
+        <ul class="service-list">
+          <li data-en="Portrait Sessions" data-zh="人像拍摄">Portrait Sessions</li>
+          <li data-en="Wedding &amp; Engagement" data-zh="婚礼 &amp; 订婚">Wedding &amp; Engagement</li>
+          <li data-en="Family Portraits" data-zh="家庭照">Family Portraits</li>
+          <li data-en="Brand Photography" data-zh="品牌摄影">Brand Photography</li>
+        </ul>
+      </div>
+      <div class="about-gear">
+        <span class="services-label" data-en="Gear" data-zh="器材">Gear</span>
+        <div class="gear-body">
+          <div class="gear-row">
+            <span class="gear-cat" data-en="Body" data-zh="机身">Body</span>
+            <span class="gear-items">Sony A7R V</span>
+          </div>
+          <div class="gear-row">
+            <span class="gear-cat" data-en="Lenses" data-zh="镜头">Lenses</span>
+            <span class="gear-items">Sony 24mm GM · Sony 24–70mm GM II · Sony 70–200mm GM II · Zeiss Batis 40mm · Zeiss Batis 85mm</span>
+          </div>
+        </div>
+      </div>
+      <div class="about-contact">
+        <span class="services-label" data-en="Contact" data-zh="联系方式">Contact</span>
+        <div class="about-contact-row">
+          <a href="mailto:hello@yourname.com" class="about-contact-item" id="contactEmail">hello@yourname.com</a>
+          <a href="#" class="about-contact-item" id="contactIG">@yourname</a>
+          <span class="about-contact-item" data-en="San Francisco Bay Area" data-zh="旧金山湾区">San Francisco Bay Area</span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -833,19 +819,17 @@ function toggleLang() {
   applyLang();
 }
 function applyLang() {
-  // data-en / data-zh elements
   document.querySelectorAll('[data-en]').forEach(el => {
     const val = el.getAttribute('data-' + lang);
     if (val) el.innerHTML = val;
   });
-  // Placeholders
   document.querySelectorAll('[data-en-placeholder]').forEach(el => {
     el.placeholder = el.getAttribute('data-' + lang + '-placeholder') || el.placeholder;
   });
-  // Bio
   document.getElementById('bioText').textContent =
-    lang === 'en' ? SITE_CONFIG.bioEn : SITE_CONFIG.bioZh;
-  // Filter buttons label
+    lang === 'en'
+      ? "Based in the San Francisco Bay Area, I'm a portrait photographer with five years of experience — drawn to light, emotion, and the fleeting moments that deserve to be remembered."
+      : "旧金山湾区人像摄影师，五年拍摄经验。着迷于光线与情感，以及那些值得被珍藏的瞬间。";
   document.querySelectorAll('.filter-btn').forEach(btn => {
     const key = 'data-' + lang;
     if (btn.getAttribute(key)) btn.textContent = btn.getAttribute(key);
@@ -871,7 +855,10 @@ function initSite() {
     igEl.textContent = '@' + SITE_CONFIG.instagram;
   }
   // Bio
-  document.getElementById('bioText').textContent = SITE_CONFIG.bioEn;
+  document.getElementById('bioText').textContent =
+    lang === 'en'
+      ? "Based in the San Francisco Bay Area, I'm a portrait photographer with five years of experience — drawn to light, emotion, and the fleeting moments that deserve to be remembered."
+      : "旧金山湾区人像摄影师，五年拍摄经验。着迷于光线与情感，以及那些值得被珍藏的瞬间。";
   buildSeriesGrid();
 }
 
