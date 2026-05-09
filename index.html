@@ -931,52 +931,47 @@ function openSeries(s) {
   document.getElementById('detailDate').textContent = s.date;
   document.getElementById('detailCount').textContent = s.photos.length + ' photos';
   const photosEl = document.getElementById('detailPhotos');
-  photosEl.innerHTML = '<div style="padding:40px;text-align:center;color:var(--muted);font-size:12px;letter-spacing:.1em">Loading...</div>';
-  lbPhotos = s.photos;
+  photosEl.innerHTML = '';
+  // Normalize photos to srcs
+  const srcs = s.photos.map(p => typeof p === 'string' ? p : p.src);
+  lbPhotos = srcs;
   detail.style.display = 'block';
   document.body.style.overflow = 'hidden';
   requestAnimationFrame(() => detail.classList.add('open', 'visible'));
 
-  // Detect all orientations first, then render
-  const orientations = [];
-  const ratios = [];
+  // Load all, detect orientation, then render
+  const isLandscape = new Array(srcs.length).fill(false);
   let done = 0;
-  s.photos.forEach((src, i) => {
+  srcs.forEach((src, i) => {
     const img = new Image();
     img.onload = () => {
-      const r = img.naturalWidth / img.naturalHeight;
-      ratios[i] = r;
-      orientations[i] = r > 1.5 ? 'landscape' : 'portrait';
-      if (++done === s.photos.length) renderDetailPhotos(s, photosEl, orientations, ratios);
+      isLandscape[i] = (img.naturalWidth / img.naturalHeight) > 1.3;
+      if (++done === srcs.length) renderDetailPhotos(srcs, s.name, photosEl, isLandscape);
     };
-    img.onerror = () => {
-      ratios[i] = 0.75;
-      orientations[i] = 'portrait';
-      if (++done === s.photos.length) renderDetailPhotos(s, photosEl, orientations, ratios);
-    };
+    img.onerror = () => { if (++done === srcs.length) renderDetailPhotos(srcs, s.name, photosEl, isLandscape); };
     img.src = src;
   });
 }
 
-function renderDetailPhotos(s, container, orientations, ratios) {
+function renderDetailPhotos(srcs, name, container, isLandscape) {
   container.innerHTML = '';
   let i = 0;
-  while (i < s.photos.length) {
-    if (orientations[i] === 'landscape') {
+  while (i < srcs.length) {
+    if (isLandscape[i]) {
       const row = document.createElement('div');
-      row.style.cssText = 'margin-bottom:8px;';
+      row.style.marginBottom = '8px';
       const div = document.createElement('div');
       div.className = 'detail-photo';
-      div.innerHTML = `<img src="${s.photos[i]}" alt="${s.name} ${i+1}" loading="lazy" style="width:100%;display:block;height:auto;">`;
-      div.onclick = () => openLb(i);
+      const idx = i;
+      div.innerHTML = `<img src="${srcs[i]}" alt="${name} ${i+1}" loading="lazy" style="width:100%;display:block;height:auto;">`;
+      div.onclick = () => openLb(idx);
       row.appendChild(div);
       container.appendChild(row);
       i++;
     } else {
       const batch = [];
-      while (i < s.photos.length && orientations[i] === 'portrait' && batch.length < 3) {
-        batch.push(i);
-        i++;
+      while (i < srcs.length && !isLandscape[i] && batch.length < 3) {
+        batch.push(i++);
       }
       const row = document.createElement('div');
       row.style.cssText = `display:grid;grid-template-columns:repeat(${batch.length},1fr);gap:8px;margin-bottom:8px;`;
@@ -984,8 +979,9 @@ function renderDetailPhotos(s, container, orientations, ratios) {
         const div = document.createElement('div');
         div.className = 'detail-photo';
         div.style.aspectRatio = '3/4';
-        div.innerHTML = `<img src="${s.photos[idx]}" alt="${s.name} ${idx+1}" loading="lazy" style="width:100%;height:100%;object-fit:cover;">`;
-        div.onclick = () => openLb(idx);
+        const i2 = idx;
+        div.innerHTML = `<img src="${srcs[idx]}" alt="${name} ${idx+1}" loading="lazy" style="width:100%;height:100%;object-fit:cover;">`;
+        div.onclick = () => openLb(i2);
         row.appendChild(div);
       });
       container.appendChild(row);
