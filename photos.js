@@ -44,7 +44,7 @@ const SERIES = [
       "https://res.cloudinary.com/dpadfus0q/image/upload/v1778291282/portfolio/qywpzrddqhgic7m0uppz.jpg",
       "https://res.cloudinary.com/dpadfus0q/image/upload/v1778291279/portfolio/qnjthnzn08okfixz1395.jpg",
       "https://res.cloudinary.com/dpadfus0q/image/upload/v1778291282/portfolio/r0srvykizqnladdfh34i.jpg",
-      "https://res.cloudinary.com/dpadfus0q/image/upload/v1778291283/portfolio/ju9y588g7jp4gzoj4vvt.jpg"
+      { "src": "https://res.cloudinary.com/dpadfus0q/image/upload/v1778291283/portfolio/ju9y588g7jp4gzoj4vvt.jpg", "landscape": true }
     ]
   },
   {
@@ -55,11 +55,11 @@ const SERIES = [
     "cover": "https://res.cloudinary.com/dpadfus0q/image/upload/v1778290928/portfolio/xslep9s6fkcf0h8ap7vd.jpg",
     "photos": [
       "https://res.cloudinary.com/dpadfus0q/image/upload/v1778290928/portfolio/xslep9s6fkcf0h8ap7vd.jpg",
-      "https://res.cloudinary.com/dpadfus0q/image/upload/v1778290929/portfolio/dnu7s0oqq6w6zk99hs12.jpg",
+      { "src": "https://res.cloudinary.com/dpadfus0q/image/upload/v1778290929/portfolio/dnu7s0oqq6w6zk99hs12.jpg", "landscape": true },
       "https://res.cloudinary.com/dpadfus0q/image/upload/v1778290931/portfolio/b0gnz3iuelsqgzbcbveu.jpg",
-      "https://res.cloudinary.com/dpadfus0q/image/upload/v1778290932/portfolio/uvvk6dzcdaz3aqxzcbkx.jpg",
+      { "src": "https://res.cloudinary.com/dpadfus0q/image/upload/v1778290932/portfolio/uvvk6dzcdaz3aqxzcbkx.jpg", "landscape": true },
       "https://res.cloudinary.com/dpadfus0q/image/upload/v1778290933/portfolio/b3uyfxy9wcvhxwsx1se8.jpg",
-      "https://res.cloudinary.com/dpadfus0q/image/upload/v1778296135/portfolio/dcuhb3iswxdtj4bnttqr.jpg"
+      { "src": "https://res.cloudinary.com/dpadfus0q/image/upload/v1778296135/portfolio/dcuhb3iswxdtj4bnttqr.jpg", "landscape": true }
     ]
   }
 ];
