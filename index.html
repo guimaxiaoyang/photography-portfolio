@@ -32,23 +32,19 @@ body {
 }
 
 /* ── Cursor ── */
-.cursor, .cursor-ring {
+.cursor {
   position: fixed;
-  border-radius: 50%;
   pointer-events: none;
   z-index: 9999;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
   opacity: 0;
   transition: opacity .3s;
+  width: 32px;
+  height: 32px;
 }
-.cursor { width:7px; height:7px; background:var(--caramel); transition:transform .1s, opacity .3s; }
-.cursor-ring {
-  width:30px; height:30px;
-  border:1px solid var(--caramel);
-  transition:all .28s cubic-bezier(.25,.46,.45,.94), opacity .3s;
-}
-.cursor.visible, .cursor-ring.visible { opacity:1; }
-@media (pointer:coarse) { .cursor, .cursor-ring { display:none; } body { cursor:auto; } }
+.cursor.visible { opacity: 1; }
+.cursor-ring { display: none; }
+@media (pointer:coarse) { .cursor { display:none; } body { cursor:auto; } }
 body { cursor:none; }
 
 /* ── Nav ── */
@@ -590,7 +586,16 @@ footer a:hover { color:var(--caramel); }
 </head>
 <body>
 
-<div class="cursor" id="cursor"></div>
+<div class="cursor" id="cursor">
+  <svg width="32" height="24" viewBox="0 0 44 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="1" y="8" width="42" height="22" rx="4" stroke="#C4A87A" stroke-width="1.5"/>
+    <rect x="14" y="1" width="16" height="9" rx="2" stroke="#C4A87A" stroke-width="1.5"/>
+    <circle cx="22" cy="19" r="8" stroke="#C4A87A" stroke-width="1.5"/>
+    <circle cx="22" cy="19" r="4" stroke="#C4A87A" stroke-width="1"/>
+    <circle cx="22" cy="19" r="1.5" fill="#C4A87A"/>
+    <circle cx="36" cy="11" r="2" stroke="#C4A87A" stroke-width="1"/>
+  </svg>
+</div>
 <div class="cursor-ring" id="cursorRing"></div>
 
 <!-- Nav -->
@@ -756,8 +761,8 @@ footer a:hover { color:var(--caramel); }
         <span class="services-label" data-en="Contact" data-zh="联系方式">Contact</span>
         <div class="about-contact-row">
           <a href="mailto:hello@yourname.com" class="about-contact-item" id="contactEmail">hello@yourname.com</a>
-          <a href="#" class="about-contact-item" id="contactIG">@yourname</a>
-          <span class="about-contact-item" data-en="San Francisco Bay Area" data-zh="旧金山湾区">San Francisco Bay Area</span>
+          <a href="https://instagram.com/yang_lighttale" class="about-contact-item" id="contactIG">@yang_lighttale</a>
+          <a href="https://www.xiaohongshu.com/user/profile/yang_lighttale" class="about-contact-item" target="_blank">小红书 · Yang_光影速写</a>
         </div>
       </div>
     </div>
@@ -836,6 +841,8 @@ function initSite() {
     igEl.href = 'https://instagram.com/' + SITE_CONFIG.instagram;
     igEl.textContent = '@' + SITE_CONFIG.instagram;
   }
+  // Update email link
+  emailEl.textContent = SITE_CONFIG.email;
   // Bio
   document.getElementById('bioText').textContent =
     lang === 'en'
@@ -1072,10 +1079,7 @@ const ring = document.getElementById('cursorRing');
 document.addEventListener('mousemove', e => {
   cursor.style.left = e.clientX + 'px';
   cursor.style.top  = e.clientY + 'px';
-  ring.style.left   = e.clientX + 'px';
-  ring.style.top    = e.clientY + 'px';
   cursor.classList.add('visible');
-  ring.classList.add('visible');
 });
 
 // ── Featured Strip (drag to scroll) ──
