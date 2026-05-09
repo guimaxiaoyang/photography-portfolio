@@ -142,6 +142,60 @@ nav.scrolled {
   .hero-right { min-height:55vw; }
 }
 
+/* ── Featured Strip ── */
+.featured-strip {
+  background: var(--cream);
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+}
+.featured-track-wrap {
+  overflow-x: auto;
+  overflow-y: hidden;
+  cursor: grab;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.featured-track-wrap::-webkit-scrollbar { display:none; }
+.featured-track-wrap.grabbing { cursor: grabbing; }
+.featured-track {
+  display: flex;
+  gap: 3px;
+  padding: 0 72px 48px;
+  width: max-content;
+}
+.featured-item {
+  height: 44vh;
+  min-height: 260px;
+  max-height: 420px;
+  overflow: hidden;
+  flex-shrink: 0;
+  position: relative;
+  cursor: none;
+}
+.featured-item img {
+  height: 100%;
+  width: auto;
+  display: block;
+  object-fit: cover;
+  filter: sepia(8%) saturate(0.88) brightness(0.98);
+  transition: transform .6s cubic-bezier(.25,.46,.45,.94), filter .4s;
+  pointer-events: none;
+}
+.featured-item:hover img {
+  transform: scale(1.02);
+  filter: sepia(4%) saturate(0.95) brightness(1.02);
+}
+.featured-hint {
+  position: absolute;
+  bottom: 48px; right: 72px;
+  font-size: 9px; letter-spacing:.22em; text-transform:uppercase;
+  color: var(--muted); display:flex; align-items:center; gap:10px;
+}
+.featured-hint::before {
+  content:''; width:32px; height:1px; background:var(--caramel);
+}
+
 /* ── Section padding ── */
 #portfolio, #about, #booking, #contact { padding: 88px 72px; }
 
@@ -550,8 +604,16 @@ footer a:hover { color:var(--caramel); }
     <div class="hero-right"></div>
   </div>
 
+  <!-- Featured Strip -->
+  <div class="featured-strip">
+    <div class="featured-track-wrap" id="featuredWrap">
+      <div class="featured-track" id="featuredTrack"></div>
+    </div>
+    <div class="featured-hint" data-en="Drag to explore" data-zh="拖动浏览">Drag to explore</div>
+  </div>
+
   <!-- Series Grid -->
-  <div style="padding:0 72px 88px;">
+  <div style="padding:72px 72px 88px;">
     <div class="filter-tabs">
       <button class="filter-btn active" data-filter="all" onclick="filterSeries(this,'all')" data-en="All" data-zh="全部">All</button>
       <button class="filter-btn" data-filter="portrait" onclick="filterSeries(this,'portrait')" data-en="Portrait" data-zh="人像">Portrait</button>
@@ -786,6 +848,44 @@ function initSite() {
   buildSeriesGrid();
 }
 
+// ── Featured Strip (drag to scroll) ──
+function initFeaturedStrip() {
+  const track = document.getElementById('featuredTrack');
+  const wrap = document.getElementById('featuredWrap');
+  if (!track || !wrap) return;
+
+  const featured = [];
+  for (const s of SERIES) {
+    for (const p of s.photos) {
+      if (featured.length >= 5) break;
+      featured.push({ src: p, series: s.name });
+    }
+    if (featured.length >= 5) break;
+  }
+
+  featured.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'featured-item';
+    div.innerHTML = `<img src="${item.src}" alt="${item.series}" loading="${i < 2 ? 'eager' : 'lazy'}">`;
+    div.onclick = () => { lbPhotos = featured.map(f => f.src); openLb(i); };
+    track.appendChild(div);
+  });
+
+  let isDragging = false, startX = 0, scrollLeft = 0;
+  wrap.addEventListener('mousedown', e => {
+    isDragging = true; startX = e.pageX - wrap.offsetLeft;
+    scrollLeft = wrap.scrollLeft; wrap.classList.add('grabbing');
+  });
+  wrap.addEventListener('mouseleave', () => { isDragging = false; wrap.classList.remove('grabbing'); });
+  wrap.addEventListener('mouseup', () => { isDragging = false; wrap.classList.remove('grabbing'); });
+  wrap.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const x = e.pageX - wrap.offsetLeft;
+    wrap.scrollLeft = scrollLeft - (x - startX) * 1.2;
+  });
+}
+
 // ── Series Grid ──
 let currentFilter = 'all';
 let lbPhotos = [];
@@ -921,6 +1021,44 @@ document.addEventListener('mousemove', e => {
   cursor.classList.add('visible');
   ring.classList.add('visible');
 });
+
+// ── Featured Strip (drag to scroll) ──
+function initFeaturedStrip() {
+  const track = document.getElementById('featuredTrack');
+  const wrap = document.getElementById('featuredWrap');
+  if (!track || !wrap) return;
+
+  const featured = [];
+  for (const s of SERIES) {
+    for (const p of s.photos) {
+      if (featured.length >= 5) break;
+      featured.push({ src: p, series: s.name });
+    }
+    if (featured.length >= 5) break;
+  }
+
+  featured.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'featured-item';
+    div.innerHTML = `<img src="${item.src}" alt="${item.series}" loading="${i < 2 ? 'eager' : 'lazy'}">`;
+    div.onclick = () => { lbPhotos = featured.map(f => f.src); openLb(i); };
+    track.appendChild(div);
+  });
+
+  let isDragging = false, startX = 0, scrollLeft = 0;
+  wrap.addEventListener('mousedown', e => {
+    isDragging = true; startX = e.pageX - wrap.offsetLeft;
+    scrollLeft = wrap.scrollLeft; wrap.classList.add('grabbing');
+  });
+  wrap.addEventListener('mouseleave', () => { isDragging = false; wrap.classList.remove('grabbing'); });
+  wrap.addEventListener('mouseup', () => { isDragging = false; wrap.classList.remove('grabbing'); });
+  wrap.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const x = e.pageX - wrap.offsetLeft;
+    wrap.scrollLeft = scrollLeft - (x - startX) * 1.2;
+  });
+}
 
 // ── Series Grid ──
 let currentFilter = 'all';
@@ -1099,6 +1237,7 @@ function initFeaturedStrip() {
 }
 
 // ── Start ──
+initFeaturedStrip();
 initSite();
 </script>
 </body>
