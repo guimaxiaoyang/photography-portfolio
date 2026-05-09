@@ -2,9 +2,9 @@
 // Last updated: 5/8/2026
 
 const SITE_CONFIG = {
-  "name": "Your Name",
-  "tagline": "Light & Moment",
-  "taglineZh": "光与瞬间",
+  "name": "Yang",
+  "tagline": "Light Tale by Yang",
+  "taglineZh": "Yang 的光影速写",
   "email": "hello@yourname.com",
   "instagram": "yourname",
   "bioEn": "Based in the San Francisco Bay Area, I'm a portrait photographer with five years of experience.",
