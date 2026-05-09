@@ -946,7 +946,7 @@ function openSeries(s) {
     img.onload = () => {
       const r = img.naturalWidth / img.naturalHeight;
       ratios[i] = r;
-      orientations[i] = r > 1.2 ? 'landscape' : 'portrait';
+      orientations[i] = r > 1.5 ? 'landscape' : 'portrait';
       if (++done === s.photos.length) renderDetailPhotos(s, photosEl, orientations, ratios);
     };
     img.onerror = () => {
