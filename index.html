@@ -679,21 +679,53 @@ footer a:hover { color:var(--caramel); }
 
 /* ── Responsive ── */
 @media (max-width:900px) {
-  nav { padding:20px 24px; }
+  nav { padding:16px 20px; }
   .nav-links { display:none; }
   .hero { grid-template-columns:1fr; }
-  .hero-left { padding:120px 24px 60px; min-height:60vh; justify-content:flex-end; }
-  .hero-right { min-height:45vh; }
-  section { padding:72px 24px; }
-  .masonry { columns:2; }
-  .about-grid, .booking-wrap { grid-template-columns:1fr; gap:44px; }
+  .hero-left { padding:56px 20px 16px; min-height:auto; justify-content:flex-start; }
+  .hero-right { display:none; }
+  .hero-title { font-size:clamp(20px,5.5vw,28px); }
+  .hero-title-zh { font-size:12px; margin-top:4px; }
+  .hero-tag { margin-bottom:12px; }
+  section { padding:48px 20px; }
+  #portfolio, #about, #booking, #contact { padding:48px 20px; }
+  #clients { padding:48px 20px; }
+  .about-grid, .booking-wrap { grid-template-columns:1fr; gap:32px; }
   .contact-grid { grid-template-columns:1fr; }
   footer { flex-direction:column; gap:12px; text-align:center; }
+  /* Filter tabs - single row, scrollable */
+  .filter-tabs {
+    flex-wrap:nowrap !important;
+    overflow-x:auto;
+    overflow-y:hidden;
+    scrollbar-width:none;
+    gap:6px;
+    padding-bottom:4px;
+  }
+  .filter-tabs::-webkit-scrollbar { display:none; }
+  .filter-btn { flex-shrink:0; font-size:9.5px; padding:7px 14px; }
+  /* Scroll cards - smaller on mobile */
+  .series-scroll-track { padding:0 20px 32px; gap:8px; }
+  .series-scroll-card {
+    width:62vw !important;
+    height:82vw !important;
+    max-height:380px !important;
+    min-height:200px !important;
+  }
+  .scroll-hint { padding:0 20px 12px; font-size:8px; }
+  .detail-header { padding:14px 16px; }
+  .detail-photos { height:70vh; }
+  .series-detail { overflow-y:hidden; }
 }
 @media (max-width:540px) {
-  .masonry { columns:1; }
   .form-row { grid-template-columns:1fr; }
   .service-list { grid-template-columns:1fr; }
+  .hero-left { padding:52px 20px 12px; }
+  .series-scroll-card {
+    width:72vw !important;
+    height:96vw !important;
+    max-height:360px !important;
+  }
 }
 </style>
 </head>
@@ -732,8 +764,7 @@ footer a:hover { color:var(--caramel); }
       <button class="filter-btn" data-filter="portrait" onclick="filterSeries(this,'portrait')" data-en="Portrait" data-zh="人像">Portrait</button>
       <button class="filter-btn" data-filter="wedding" onclick="filterSeries(this,'wedding')" data-en="Wedding" data-zh="婚礼">Wedding</button>
       <button class="filter-btn" data-filter="family" onclick="filterSeries(this,'family')" data-en="Family" data-zh="家庭">Family</button>
-      <button class="filter-btn" data-filter="event" onclick="filterSeries(this,'event')" data-en="Events" data-zh="活动">Events</button>
-      <button class="filter-btn" data-filter="travel" onclick="filterSeries(this,'travel')" data-en="Travel" data-zh="旅行">Travel</button>
+<button class="filter-btn" data-filter="travel" onclick="filterSeries(this,'travel')" data-en="Travel" data-zh="旅行">Travel</button>
     </div>
   </div>
 
