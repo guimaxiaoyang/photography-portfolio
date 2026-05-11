@@ -899,7 +899,7 @@ footer a:hover { color:var(--caramel); }
         </div>
         <div class="form-group">
           <label data-en="Tell me more" data-zh="更多想法">Tell me more</label>
-          <textarea name="message" placeholder="Share your vision, mood, special requests..."></textarea>
+          <textarea name="message" data-en-placeholder="Share your vision, mood, special requests..." data-zh-placeholder="分享你的想法、风格偏好和特别要求..." placeholder="Share your vision, mood, special requests..."></textarea>
         </div>
         <button type="submit" class="btn-submit">
           <span data-en="Send Inquiry" data-zh="发送预约">Send Inquiry</span> →
@@ -977,7 +977,7 @@ footer a:hover { color:var(--caramel); }
 <!-- Footer -->
 <footer>
   <span id="footerName">YOUR NAME Photography</span>
-  <span>© 2026 · All images reserved</span>
+  <span>© <span id="footerYear"></span> · All images reserved</span>
   <a href="#home" data-en="Back to top ↑" data-zh="返回顶部 ↑">Back to top ↑</a>
 </footer>
 
@@ -1020,6 +1020,7 @@ function initSite() {
   // Name
   document.title = SITE_CONFIG.name + ' Photography';
   
+  document.getElementById('footerYear').textContent = new Date().getFullYear();
   document.getElementById('footerName').textContent = SITE_CONFIG.tagline;
   // Hero title with camera icon
   document.getElementById('heroTitle').innerHTML =
