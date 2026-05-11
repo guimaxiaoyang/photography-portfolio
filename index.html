@@ -851,15 +851,31 @@ footer a:hover { color:var(--caramel); }
             <input type="email" name="email" placeholder="jane@example.com" required>
           </div>
         </div>
-        <div class="form-group">
-          <label data-en="Session Type" data-zh="拍摄类型">Session Type</label>
-          <select name="session_type" required>
-            <option value="" data-en="Select type..." data-zh="请选择...">Select type...</option>
-            <option data-en="Portrait" data-zh="人像拍摄">Portrait</option>
-            <option data-en="Wedding / Engagement" data-zh="婚礼 / 订婚">Wedding / Engagement</option>
-            <option data-en="Family" data-zh="家庭照">Family</option>
-            <option data-en="Other" data-zh="其他">Other</option>
-          </select>
+        <div class="form-row">
+          <div class="form-group">
+            <label data-en="Session Type" data-zh="拍摄类型">Session Type</label>
+            <select name="session_type" required>
+              <option value="">Select type... / 请选择拍摄类型</option>
+              <option value="solo">个人写真 / Solo Portrait</option>
+              <option value="couple">情侣写真 / Couple Portrait</option>
+              <option value="wedding">婚礼摄影 / Wedding</option>
+              <option value="engagement">订婚摄影 / Engagement</option>
+              <option value="family">家庭·亲子 / Family Portrait</option>
+              <option value="graduation">毕业写真 / Graduation</option>
+              <option value="birthday">生日记录 / Birthday</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label data-en="Number of People" data-zh="拍摄人数">Number of People</label>
+            <select name="headcount">
+              <option value="">Select... / 请选择</option>
+              <option value="1">1 人 / 1 person</option>
+              <option value="2">2 人 / 2 people</option>
+              <option value="3-5">3–5 人 / 3–5 people</option>
+              <option value="6-10">6–10 人 / 6–10 people</option>
+              <option value="10+">10人以上 / 10+ people</option>
+            </select>
+          </div>
         </div>
         <div class="form-row">
           <div class="form-group">
@@ -867,9 +883,19 @@ footer a:hover { color:var(--caramel); }
             <input type="date" name="date">
           </div>
           <div class="form-group">
-            <label data-en="Location" data-zh="拍摄地点">Location</label>
-            <input type="text" name="location" placeholder="San Francisco, CA">
+            <label data-en="Duration" data-zh="拍摄时长">Duration</label>
+            <select name="duration">
+              <option value="">Select... / 请选择</option>
+              <option value="1hr">1 小时 / 1 hour</option>
+              <option value="2hr">2 小时 / 2 hours</option>
+              <option value="half-day">半天 3–5小时 / Half day 3–5 hrs</option>
+              <option value="full-day">全天 6小时以上 / Full day 6+ hrs</option>
+            </select>
           </div>
+        </div>
+        <div class="form-group">
+          <label data-en="Location" data-zh="拍摄地点">Location</label>
+          <input type="text" name="location" placeholder="San Francisco, CA">
         </div>
         <div class="form-group">
           <label data-en="Tell me more" data-zh="更多想法">Tell me more</label>
