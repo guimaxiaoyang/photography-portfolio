@@ -850,7 +850,7 @@ footer a:hover { color:var(--caramel); }
       <span class="section-label" data-en="Book a Session" data-zh="预约拍摄">预约拍摄</span>
       <h2 class="section-title">Let's Create <span class="zh">预约拍摄</span></h2>
       <p data-en="Every session begins with a conversation. Tell me about your vision and I'll take care of the rest." data-zh="每次拍摄都从一次对话开始。告诉我你的想法，其余的交给我。">
-        Every session begins with a conversation. Tell me about your vision and I'll take care of the rest.
+        每次拍摄都从一次对话开始。告诉我你的想法，其余的交给我。
       </p>
       <ol class="booking-steps">
         <li>
@@ -936,7 +936,7 @@ footer a:hover { color:var(--caramel); }
         </div>
         <div class="form-group">
           <label data-en="Tell me more" data-zh="更多想法">更多想法</label>
-          <textarea name="message" data-en-placeholder="分享你的想法、风格偏好和特别要求..." data-zh-placeholder="分享你的想法、风格偏好和特别要求..." placeholder="分享你的想法、风格偏好和特别要求..."></textarea>
+          <textarea name="message" data-en-placeholder="Share your vision, mood, special requests..." data-zh-placeholder="分享你的想法、风格偏好和特别要求..." placeholder="分享你的想法、风格偏好和特别要求..."></textarea>
         </div>
         <button type="submit" class="btn-submit">
           <span data-en="Send Inquiry" data-zh="发送预约">发送预约</span> →
@@ -1033,6 +1033,7 @@ function setLang(newLang) {
   document.getElementById('langCurrent').textContent = lang === 'zh' ? '中文' : 'English';
   document.getElementById('langMenu').classList.remove('open');
   applyLang();
+  document.getElementById('bioText').textContent = lang === 'en' ? SITE_CONFIG.bioEn : SITE_CONFIG.bioZh;
 }
 
 document.addEventListener('click', function(e) {
@@ -1060,8 +1061,7 @@ function applyLang() {
   document.querySelectorAll('[data-en-placeholder]').forEach(el => {
     el.placeholder = el.getAttribute('data-' + lang + '-placeholder') || el.placeholder;
   });
-  document.getElementById('bioText').textContent =
-    lang === 'en' ? SITE_CONFIG.bioEn : SITE_CONFIG.bioZh;
+  document.getElementById('bioText').textContent = lang === 'en' ? SITE_CONFIG.bioEn : SITE_CONFIG.bioZh;
   document.querySelectorAll('.filter-btn').forEach(btn => {
     const key = 'data-' + lang;
     if (btn.getAttribute(key)) btn.textContent = btn.getAttribute(key);
