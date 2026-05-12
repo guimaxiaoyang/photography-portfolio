@@ -14,6 +14,7 @@ const SITE_CONFIG = {
 const SERIES = [
   {
     "id": "wedding-lovely-2024",
+    "featured": true,
     "name": "City Hall Moment",
     "date": "July 2024",
     "category": "wedding",
@@ -51,6 +52,7 @@ const SERIES = [
   },
   {
     "id": "portrait-lan-202605",
+    "featured": true,
     "name": "我在大岛天气晴",
     "date": "May 2026",
     "category": "portrait",
@@ -69,6 +71,7 @@ const SERIES = [
   },
   {
     "id": "portrait-Rachel-202409",
+    "featured": true,
     "name": "那年夏天宁静的海",
     "date": "Sep 2024",
     "category": "portrait",
@@ -86,6 +89,7 @@ const SERIES = [
   },
   {
     "id": "portrait-Liz-202407",
+    "featured": true,
     "name": "Summer Story",
     "date": "July 2024",
     "category": "portrait",

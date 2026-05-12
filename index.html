@@ -769,7 +769,7 @@ footer a:hover { color:var(--caramel); }
   <!-- Filter tabs -->
   <div style="padding:24px 72px 16px;">
     <div class="filter-tabs" style="margin-left:0;padding-left:0;">
-      <button class="filter-btn active" data-filter="all" onclick="filterSeries(this,'all')" data-en="All" data-zh="全部">All</button>
+      <button class="filter-btn active" data-filter="featured" onclick="filterSeries(this,'featured')" data-en="Featured" data-zh="精选">Featured</button>
       <button class="filter-btn" data-filter="portrait" onclick="filterSeries(this,'portrait')" data-en="Portrait" data-zh="个人·情侣">Portrait</button>
       <button class="filter-btn" data-filter="wedding" onclick="filterSeries(this,'wedding')" data-en="Wedding" data-zh="婚礼·订婚">Wedding</button>
       <button class="filter-btn" data-filter="family" onclick="filterSeries(this,'family')" data-en="Family" data-zh="家庭·亲子">Family</button>
@@ -1107,7 +1107,9 @@ function buildScrollStrip(filter) {
   const track = document.getElementById('seriesScrollTrack');
   if (!track) return;
   track.innerHTML = '';
-  const filtered = filter === 'all' ? SERIES : SERIES.filter(s => s.category === filter);
+  const filtered = filter === 'featured'
+    ? SERIES.filter(s => s.featured)
+    : SERIES.filter(s => s.category === filter);
   filtered.forEach(s => {
     const card = document.createElement('div');
     card.className = 'series-scroll-card';
