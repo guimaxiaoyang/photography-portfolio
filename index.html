@@ -3,7 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Photography Portfolio</title>
+<title>光语 | Told By Light — 旧金山湾区人像摄影师</title>
+<meta name="description" content="光语 Told By Light，旧金山湾区人像摄影师 Yang。专注人像、情侣、婚礼、家庭、毕业摄影。五年拍摄经验，着迷于光线与情感。Bay Area portrait photographer.">
+<meta name="keywords" content="光语, Told By Light, 旧金山摄影师, 湾区摄影师, Bay Area photographer, portrait photographer, 人像摄影, 婚礼摄影, 家庭摄影, San Francisco photographer, Yang photographer">
+<meta name="author" content="Yang | Told By Light">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.toldbylight.photography/">
+
+<!-- Open Graph -->
+<meta property="og:title" content="光语 | Told By Light Photography">
+<meta property="og:description" content="旧金山湾区人像摄影师，专注人像、婚礼、家庭摄影。Bay Area portrait photographer.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.toldbylight.photography/">
+<meta property="og:image" content="https://res.cloudinary.com/dpadfus0q/image/upload/v1778290589/portfolio/ikc3wqro9gbwsayilywp.jpg">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:locale:alternate" content="en_US">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="光语 | Told By Light Photography">
+<meta name="twitter:description" content="旧金山湾区人像摄影师 Yang — 光线、情感与瞬间。">
+<meta name="twitter:image" content="https://res.cloudinary.com/dpadfus0q/image/upload/v1778290589/portfolio/ikc3wqro9gbwsayilywp.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;1,9..40,300&family=Noto+Sans+SC:wght@300;400&display=swap" rel="stylesheet">
 <style>
@@ -1032,8 +1052,8 @@ function setLang(newLang) {
   lang = newLang;
   document.getElementById('langCurrent').textContent = lang === 'zh' ? '中文' : 'English';
   document.getElementById('langMenu').classList.remove('open');
-  applyLang();
   document.getElementById('bioText').textContent = lang === 'en' ? SITE_CONFIG.bioEn : SITE_CONFIG.bioZh;
+  applyLang();
 }
 
 document.addEventListener('click', function(e) {
