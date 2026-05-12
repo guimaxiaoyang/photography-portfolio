@@ -850,28 +850,28 @@ footer a:hover { color:var(--caramel); }
       <span class="section-label" data-en="Book a Session" data-zh="预约拍摄">预约拍摄</span>
       <h2 class="section-title">Let's Create <span class="zh">预约拍摄</span></h2>
       <p data-en="Every session begins with a conversation. Tell me about your vision and I'll take care of the rest." data-zh="每次拍摄都从一次对话开始。告诉我你的想法，其余的交给我。">
-        Every session begins with a conversation. Tell me about your vision and I'll take care of the rest.
+        每次拍摄都从一次对话开始。告诉我你的想法，其余的交给我。
       </p>
       <ol class="booking-steps">
         <li>
           <span class="step-num">01</span>
           <div>
-            <strong data-en="Fill in the form" data-zh="填写预约表单">Fill in the form</strong><br>
-            <span style="font-size:12px;color:var(--muted)" data-en="Share your ideas and preferred dates" data-zh="分享你的想法和期望日期">Share your ideas and preferred dates</span>
+            <strong data-en="Fill in the form" data-zh="填写预约表单">填写预约表单</strong><br>
+            <span style="font-size:12px;color:var(--muted)" data-en="Share your ideas and preferred dates" data-zh="分享你的想法和期望日期">分享你的想法和期望日期</span>
           </div>
         </li>
         <li>
           <span class="step-num">02</span>
           <div>
-            <strong data-en="I'll reach out" data-zh="我来联系你">I'll reach out</strong><br>
-            <span style="font-size:12px;color:var(--muted)" data-en="Within 48 hours to confirm details" data-zh="48小时内确认细节">Within 48 hours to confirm details</span>
+            <strong data-en="I'll reach out" data-zh="我来联系你">我来联系你</strong><br>
+            <span style="font-size:12px;color:var(--muted)" data-en="Within 48 hours to confirm details" data-zh="48小时内确认细节">48小时内确认细节</span>
           </div>
         </li>
         <li>
           <span class="step-num">03</span>
           <div>
             <strong data-en="We shoot" data-zh="开始拍摄">开始拍摄</strong><br>
-            <span style="font-size:12px;color:var(--muted)" data-en="Gallery delivered within 2 weeks" data-zh="2周内交付精修照片">Gallery delivered within 2 weeks</span>
+            <span style="font-size:12px;color:var(--muted)" data-en="Gallery delivered within 2 weeks" data-zh="2周内交付精修照片">2周内交付精修照片</span>
           </div>
         </li>
       </ol>
@@ -957,15 +957,15 @@ footer a:hover { color:var(--caramel); }
     <div class="about-text reveal">
       <span class="section-label" data-en="The Photographer" data-zh="关于摄影师">关于摄影师</span>
       <h2 class="section-title" style="margin-bottom:28px">About Me <span class="zh">关于我</span></h2>
-      <p id="bioText">Based in the San Francisco Bay Area, I'm a portrait photographer with five years of experience — drawn to light, emotion, and the fleeting moments that deserve to be remembered.</p>
+      <p id="bioText">旧金山湾区人像摄影师，五年拍摄经验。着迷于光线与情感，以及那些值得被珍藏的瞬间。</p>
       <div class="about-services">
         <span class="services-label" data-en="Services" data-zh="服务内容">服务内容</span>
         <ul class="service-list">
-          <li data-en="Solo &amp; Couple Portrait" data-zh="个人 · 情侣写真">Solo &amp; Couple Portrait</li>
-          <li data-en="Wedding &amp; Engagement" data-zh="婚礼 · 订婚">Wedding &amp; Engagement</li>
-          <li data-en="Family &amp; Kids" data-zh="家庭 · 亲子">Family &amp; Kids</li>
-          <li data-en="Graduation &amp; Birthday" data-zh="毕业 · 生日">Graduation &amp; Birthday</li>
-          <li data-en="Commercial Photography" data-zh="商业摄影">Commercial Photography</li>
+          <li data-en="Solo &amp; Couple Portrait" data-zh="个人 · 情侣写真">个人 · 情侣写真</li>
+          <li data-en="Wedding &amp; Engagement" data-zh="婚礼 · 订婚">婚礼 · 订婚</li>
+          <li data-en="Family &amp; Kids" data-zh="家庭 · 亲子">家庭 · 亲子</li>
+          <li data-en="Graduation &amp; Birthday" data-zh="毕业 · 生日">毕业 · 生日</li>
+          <li data-en="Commercial Photography" data-zh="商业摄影">商业摄影</li>
         </ul>
       </div>
       <div class="about-gear">
@@ -1456,8 +1456,10 @@ function initFeaturedStrip() {
 // ── Start ──
 initScrollStrip();
 initSite();
-applyLang();
-document.getElementById('langCurrent').textContent = lang === 'zh' ? '中文' : 'English';
+setTimeout(() => {
+  applyLang();
+  document.getElementById('langCurrent').textContent = lang === 'zh' ? '中文' : 'English';
+}, 50);
 </script>
 </body>
 </html>
