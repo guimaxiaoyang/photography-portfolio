@@ -1456,10 +1456,8 @@ function initFeaturedStrip() {
 // ── Start ──
 initScrollStrip();
 initSite();
-setTimeout(() => {
-  applyLang();
-  document.getElementById('langCurrent').textContent = lang === 'zh' ? '中文' : 'English';
-}, 50);
+applyLang();
+document.getElementById('langCurrent').textContent = lang === 'zh' ? '中文' : 'English';
 </script>
 </body>
 </html>
