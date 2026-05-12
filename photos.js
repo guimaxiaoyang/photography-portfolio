@@ -18,9 +18,9 @@ const SERIES = [
     "name": "我在大岛天气晴",
     "date": "May 2026",
     "category": "portrait",
-    "cover": "https://res.cloudinary.com/dpadfus0q/image/upload/v1778290589/portfolio/ikc3wqro9gbwsayilywp.jpg",
+    "cover": "https://res.cloudinary.com/dpadfus0q/image/upload/v1778290591/portfolio/qhvk4onp718u4rtcavoq.jpg",
     "photos": [
-      "https://res.cloudinary.com/dpadfus0q/image/upload/v1778290589/portfolio/ikc3wqro9gbwsayilywp.jpg",
+      "https://res.cloudinary.com/dpadfus0q/image/upload/v1778290591/portfolio/qhvk4onp718u4rtcavoq.jpg",
       "https://res.cloudinary.com/dpadfus0q/image/upload/v1778290592/portfolio/klqdmaapgqjvfglus1ll.jpg",
       "https://res.cloudinary.com/dpadfus0q/image/upload/v1778290586/portfolio/v4ihjeieyn6gu8xm8ajl.jpg",
       "https://res.cloudinary.com/dpadfus0q/image/upload/v1778290587/portfolio/hqb8sirfwpwiltkyfdvw.jpg",
