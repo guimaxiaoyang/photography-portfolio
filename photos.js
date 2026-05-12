@@ -30,6 +30,26 @@ const SERIES = [
     ]
   },
   {
+    "id": "wedding-Cory-2022",
+    "name": "在神的见证下",
+    "date": "June 2022",
+    "category": "wedding",
+    "cover": "https://res.cloudinary.com/dpadfus0q/image/upload/v1778560271/portfolio/ojkuopcdfjgz5nurs81a.jpg",
+    "photos": [
+      { "src": "https://res.cloudinary.com/dpadfus0q/image/upload/v1778560271/portfolio/ojkuopcdfjgz5nurs81a.jpg", "landscape": true },
+      { "src": "https://res.cloudinary.com/dpadfus0q/image/upload/v1778560272/portfolio/hbqs3zu2qcpxmqetmekj.jpg", "landscape": true },
+      { "src": "https://res.cloudinary.com/dpadfus0q/image/upload/v1778560273/portfolio/ur13bgnpwrlm4nicyb9d.jpg", "landscape": true },
+      { "src": "https://res.cloudinary.com/dpadfus0q/image/upload/v1778560274/portfolio/leybxt3vshcr6mgsair5.jpg", "landscape": true },
+      { "src": "https://res.cloudinary.com/dpadfus0q/image/upload/v1778560275/portfolio/ofz4c59jui9viqorhizk.jpg", "landscape": true },
+      "https://res.cloudinary.com/dpadfus0q/image/upload/v1778560276/portfolio/jd2sni8bcqjfludo4nr6.jpg",
+      "https://res.cloudinary.com/dpadfus0q/image/upload/v1778560277/portfolio/a3yymokzicmq4e5sg4fi.jpg",
+      "https://res.cloudinary.com/dpadfus0q/image/upload/v1778560277/portfolio/liueipiqixbfhfvejrga.jpg",
+      "https://res.cloudinary.com/dpadfus0q/image/upload/v1778560278/portfolio/xoibfqokvcg7cqescaom.jpg",
+      "https://res.cloudinary.com/dpadfus0q/image/upload/v1778560279/portfolio/nou57mtjortmcql15dpt.jpg",
+      { "src": "https://res.cloudinary.com/dpadfus0q/image/upload/v1778560281/portfolio/stu5e1obuacpj3gd0zol.jpg", "landscape": true }
+    ]
+  },
+  {
     "id": "portrait-lan-202605",
     "name": "我在大岛天气晴",
     "date": "May 2026",
