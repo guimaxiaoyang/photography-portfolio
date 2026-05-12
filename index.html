@@ -1024,9 +1024,26 @@ footer a:hover { color:var(--caramel); }
 <script>
 // ── Language ──
 let lang = 'zh';
+function toggleLangMenu() {
+  document.getElementById('langMenu').classList.toggle('open');
+}
+
+function setLang(newLang) {
+  lang = newLang;
+  document.getElementById('langCurrent').textContent = lang === 'zh' ? '中文' : 'English';
+  document.getElementById('langMenu').classList.remove('open');
+  applyLang();
+}
+
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('#langDropdown')) {
+    const menu = document.getElementById('langMenu');
+    if (menu) menu.classList.remove('open');
+  }
+});
+
 function toggleLang() {
   lang = lang === 'en' ? 'zh' : 'en';
-  document.getElementById('langBtn').textContent = lang === 'en' ? 'EN' : '中文';
   applyLang();
 }
 function applyLang() {
