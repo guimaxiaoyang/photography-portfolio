@@ -13,44 +13,6 @@ const SITE_CONFIG = {
 
 const SERIES = [
   {
-    "id": "wedding-lovely-2024",
-    "featured": true,
-    "name": "City Hall Moment",
-    "date": "July 2024",
-    "category": "wedding",
-    "cover": "https://res.cloudinary.com/dpadfus0q/image/upload/v1778558017/portfolio/oconhbpxzkjuwaieaeem.jpg",
-    "photos": [
-      "https://res.cloudinary.com/dpadfus0q/image/upload/v1778558017/portfolio/oconhbpxzkjuwaieaeem.jpg",
-      { "src": "https://res.cloudinary.com/dpadfus0q/image/upload/v1778558018/portfolio/ky2m0fre0oqq9zhcu9zd.jpg", "landscape": true },
-      { "src": "https://res.cloudinary.com/dpadfus0q/image/upload/v1778558021/portfolio/w65vzmjlzd9xp5avjsfi.jpg", "landscape": true },
-      "https://res.cloudinary.com/dpadfus0q/image/upload/v1778558022/portfolio/tdod4yb7ducaruq9xetb.jpg",
-      "https://res.cloudinary.com/dpadfus0q/image/upload/v1778558023/portfolio/qhr6soiojqtaxk09ulf8.jpg",
-      "https://res.cloudinary.com/dpadfus0q/image/upload/v1778558024/portfolio/yzi5mm790gwtadwzor9n.jpg",
-      "https://res.cloudinary.com/dpadfus0q/image/upload/v1778558025/portfolio/priqfezovvuk9c1mtmdm.jpg",
-      "https://res.cloudinary.com/dpadfus0q/image/upload/v1778558027/portfolio/s65ee0rejpbkwg2axc7f.jpg"
-    ]
-  },
-  {
-    "id": "wedding-Cory-2022",
-    "name": "在神的见证下",
-    "date": "June 2022",
-    "category": "wedding",
-    "cover": "https://res.cloudinary.com/dpadfus0q/image/upload/v1778560278/portfolio/xoibfqokvcg7cqescaom.jpg",
-    "photos": [
-      "https://res.cloudinary.com/dpadfus0q/image/upload/v1778560278/portfolio/xoibfqokvcg7cqescaom.jpg",
-      { "src": "https://res.cloudinary.com/dpadfus0q/image/upload/v1778560271/portfolio/ojkuopcdfjgz5nurs81a.jpg", "landscape": true },
-      { "src": "https://res.cloudinary.com/dpadfus0q/image/upload/v1778560272/portfolio/hbqs3zu2qcpxmqetmekj.jpg", "landscape": true },
-      { "src": "https://res.cloudinary.com/dpadfus0q/image/upload/v1778560273/portfolio/ur13bgnpwrlm4nicyb9d.jpg", "landscape": true },
-      { "src": "https://res.cloudinary.com/dpadfus0q/image/upload/v1778560274/portfolio/leybxt3vshcr6mgsair5.jpg", "landscape": true },
-      { "src": "https://res.cloudinary.com/dpadfus0q/image/upload/v1778560275/portfolio/ofz4c59jui9viqorhizk.jpg", "landscape": true },
-      "https://res.cloudinary.com/dpadfus0q/image/upload/v1778560276/portfolio/jd2sni8bcqjfludo4nr6.jpg",
-      "https://res.cloudinary.com/dpadfus0q/image/upload/v1778560277/portfolio/a3yymokzicmq4e5sg4fi.jpg",
-      "https://res.cloudinary.com/dpadfus0q/image/upload/v1778560277/portfolio/liueipiqixbfhfvejrga.jpg",
-      "https://res.cloudinary.com/dpadfus0q/image/upload/v1778560279/portfolio/nou57mtjortmcql15dpt.jpg",
-      { "src": "https://res.cloudinary.com/dpadfus0q/image/upload/v1778560281/portfolio/stu5e1obuacpj3gd0zol.jpg", "landscape": true }
-    ]
-  },
-  {
     "id": "portrait-lan-202605",
     "featured": true,
     "name": "我在大岛天气晴",
@@ -100,6 +62,44 @@ const SERIES = [
       "https://res.cloudinary.com/dpadfus0q/image/upload/v1778290933/portfolio/b3uyfxy9wcvhxwsx1se8.jpg",
       { "src": "https://res.cloudinary.com/dpadfus0q/image/upload/v1778290929/portfolio/dnu7s0oqq6w6zk99hs12.jpg", "landscape": true },
       { "src": "https://res.cloudinary.com/dpadfus0q/image/upload/v1778296135/portfolio/dcuhb3iswxdtj4bnttqr.jpg", "landscape": true }
+    ]
+  },
+  {
+    "id": "wedding-lovely-2024",
+    "featured": true,
+    "name": "City Hall Moment",
+    "date": "July 2024",
+    "category": "wedding",
+    "cover": "https://res.cloudinary.com/dpadfus0q/image/upload/v1778558017/portfolio/oconhbpxzkjuwaieaeem.jpg",
+    "photos": [
+      "https://res.cloudinary.com/dpadfus0q/image/upload/v1778558017/portfolio/oconhbpxzkjuwaieaeem.jpg",
+      { "src": "https://res.cloudinary.com/dpadfus0q/image/upload/v1778558018/portfolio/ky2m0fre0oqq9zhcu9zd.jpg", "landscape": true },
+      { "src": "https://res.cloudinary.com/dpadfus0q/image/upload/v1778558021/portfolio/w65vzmjlzd9xp5avjsfi.jpg", "landscape": true },
+      "https://res.cloudinary.com/dpadfus0q/image/upload/v1778558022/portfolio/tdod4yb7ducaruq9xetb.jpg",
+      "https://res.cloudinary.com/dpadfus0q/image/upload/v1778558023/portfolio/qhr6soiojqtaxk09ulf8.jpg",
+      "https://res.cloudinary.com/dpadfus0q/image/upload/v1778558024/portfolio/yzi5mm790gwtadwzor9n.jpg",
+      "https://res.cloudinary.com/dpadfus0q/image/upload/v1778558025/portfolio/priqfezovvuk9c1mtmdm.jpg",
+      "https://res.cloudinary.com/dpadfus0q/image/upload/v1778558027/portfolio/s65ee0rejpbkwg2axc7f.jpg"
+    ]
+  },
+  {
+    "id": "wedding-Cory-2022",
+    "name": "在神的见证下",
+    "date": "June 2022",
+    "category": "wedding",
+    "cover": "https://res.cloudinary.com/dpadfus0q/image/upload/v1778560278/portfolio/xoibfqokvcg7cqescaom.jpg",
+    "photos": [
+      "https://res.cloudinary.com/dpadfus0q/image/upload/v1778560278/portfolio/xoibfqokvcg7cqescaom.jpg",
+      { "src": "https://res.cloudinary.com/dpadfus0q/image/upload/v1778560271/portfolio/ojkuopcdfjgz5nurs81a.jpg", "landscape": true },
+      { "src": "https://res.cloudinary.com/dpadfus0q/image/upload/v1778560272/portfolio/hbqs3zu2qcpxmqetmekj.jpg", "landscape": true },
+      { "src": "https://res.cloudinary.com/dpadfus0q/image/upload/v1778560273/portfolio/ur13bgnpwrlm4nicyb9d.jpg", "landscape": true },
+      { "src": "https://res.cloudinary.com/dpadfus0q/image/upload/v1778560274/portfolio/leybxt3vshcr6mgsair5.jpg", "landscape": true },
+      { "src": "https://res.cloudinary.com/dpadfus0q/image/upload/v1778560275/portfolio/ofz4c59jui9viqorhizk.jpg", "landscape": true },
+      "https://res.cloudinary.com/dpadfus0q/image/upload/v1778560276/portfolio/jd2sni8bcqjfludo4nr6.jpg",
+      "https://res.cloudinary.com/dpadfus0q/image/upload/v1778560277/portfolio/a3yymokzicmq4e5sg4fi.jpg",
+      "https://res.cloudinary.com/dpadfus0q/image/upload/v1778560277/portfolio/liueipiqixbfhfvejrga.jpg",
+      "https://res.cloudinary.com/dpadfus0q/image/upload/v1778560279/portfolio/nou57mtjortmcql15dpt.jpg",
+      { "src": "https://res.cloudinary.com/dpadfus0q/image/upload/v1778560281/portfolio/stu5e1obuacpj3gd0zol.jpg", "landscape": true }
     ]
   }
 ];
